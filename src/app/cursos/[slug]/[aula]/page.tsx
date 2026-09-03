@@ -35,31 +35,38 @@ export default async function AulaPage({ params }: Props) {
   return (
     <>
       <Cabecalho />
-      <main id="conteudo" className="mx-auto max-w-3xl px-6 py-10">
+
+      <main id="conteudo" className="mx-auto max-w-4xl px-6 py-12">
         <nav aria-label="Trilha de navegação" className="text-sm text-tinta-suave">
-          <Link href={`/cursos/${curso.slug}`} className="hover:text-tinta">
+          <Link
+            href={`/cursos/${curso.slug}`}
+            className="transition-colors hover:text-marca"
+          >
             {curso.titulo}
           </Link>
-          <span aria-hidden="true"> · </span>
+          <span aria-hidden="true" className="px-2 text-borda-forte">
+            /
+          </span>
           <span>{modulo.titulo}</span>
         </nav>
 
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-balance">
-          {aula.titulo}
-        </h1>
-
-        <p className="mt-2 text-sm text-tinta-suave">
-          Aula {indice} de {total}
-          {aula.duracaoEmMinutos > 0
-            ? ` · ${duracaoHumana(aula.duracaoEmMinutos * 60)}`
-            : ''}
-        </p>
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <h1 className="text-3xl font-bold tracking-tight text-balance">
+            {aula.titulo}
+          </h1>
+          <p className="font-mono text-sm text-tinta-suave">
+            {String(indice).padStart(2, '0')} / {String(total).padStart(2, '0')}
+            {aula.duracaoEmMinutos > 0
+              ? ` · ${duracaoHumana(aula.duracaoEmMinutos * 60)}`
+              : ''}
+          </p>
+        </div>
 
         {/* Barra de posição na sequência. Decorativa: a linha acima já diz o
             mesmo para quem usa leitor de tela. */}
         <div
           aria-hidden="true"
-          className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-papel-fundo"
+          className="mt-4 h-1 w-full overflow-hidden rounded-full bg-superficie-alta"
         >
           <div
             className="h-full rounded-full bg-marca"
@@ -67,22 +74,24 @@ export default async function AulaPage({ params }: Props) {
           />
         </div>
 
-        <div className="mt-8">
+        <div className="mt-9">
           <PlayerDeVideo partes={aula.partes} titulo={aula.titulo} />
         </div>
 
-        <p className="mt-8 text-lg text-tinta-media text-pretty">{aula.resumo}</p>
+        <p className="mt-9 text-lg leading-relaxed text-tinta-media text-pretty">
+          {aula.resumo}
+        </p>
 
         <MateriaisDaAula materiais={aula.materiais} />
 
         <nav
           aria-label="Navegação entre aulas"
-          className="mt-12 flex flex-wrap justify-between gap-3 border-t border-borda pt-6"
+          className="mt-14 flex flex-wrap justify-between gap-3 border-t border-borda pt-8"
         >
           {anterior ? (
             <Link
               href={`/cursos/${curso.slug}/${anterior.slug}`}
-              className="rounded-md border border-borda px-4 py-2.5 font-medium hover:bg-papel-fundo"
+              className="rounded-md border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
             >
               ← {anterior.titulo}
             </Link>
@@ -93,14 +102,14 @@ export default async function AulaPage({ params }: Props) {
           {proxima ? (
             <Link
               href={`/cursos/${curso.slug}/${proxima.slug}`}
-              className="rounded-md bg-marca px-4 py-2.5 font-medium text-papel hover:bg-marca-forte"
+              className="rounded-md bg-marca px-5 py-3 font-semibold text-fundo transition-colors hover:bg-marca-forte"
             >
               {proxima.titulo} →
             </Link>
           ) : (
             <Link
               href={`/cursos/${curso.slug}`}
-              className="rounded-md border border-borda px-4 py-2.5 font-medium hover:bg-papel-fundo"
+              className="rounded-md border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
             >
               Voltar ao curso
             </Link>

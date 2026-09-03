@@ -18,21 +18,24 @@ export function MateriaisDaAula({ materiais }: { materiais: Material[] }) {
   if (materiais.length === 0) return null
 
   return (
-    <section aria-labelledby="materiais" className="mt-8">
-      <h2 id="materiais" className="text-lg font-semibold tracking-tight">
+    <section aria-labelledby="materiais" className="mt-10">
+      <h2
+        id="materiais"
+        className="text-xs font-semibold uppercase tracking-widest text-tinta-suave"
+      >
         Material de apoio
       </h2>
-      <ul className="mt-3 flex list-none flex-col gap-2">
+      <ul className="mt-4 flex list-none flex-col gap-2.5">
         {materiais.map((material) => (
           <li key={material.url}>
             <a
               href={material.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between gap-4 rounded-md border border-borda bg-papel-fundo px-4 py-3 hover:border-marca"
+              className="flex items-center justify-between gap-4 rounded-xl border border-borda bg-superficie px-5 py-4 transition-colors hover:border-marca"
             >
               <span className="font-medium">{material.titulo}</span>
-              <span className="shrink-0 text-sm text-tinta-suave">
+              <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-marca">
                 {ROTULO[material.tipo]} ↗
               </span>
             </a>

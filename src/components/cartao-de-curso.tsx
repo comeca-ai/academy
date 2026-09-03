@@ -9,16 +9,23 @@ export function CartaoDeCurso({ curso }: { curso: Curso }) {
     <li>
       <Link
         href={`/cursos/${curso.slug}`}
-        className="group flex h-full flex-col rounded-lg border border-borda bg-papel-fundo p-5 transition-colors hover:border-marca"
+        className="group flex h-full flex-col rounded-xl border border-borda bg-superficie p-6 transition-colors hover:border-marca"
       >
-        <h3 className="text-lg font-semibold tracking-tight group-hover:text-marca">
+        <p className="text-xs font-semibold uppercase tracking-widest text-marca">
+          Curso
+        </p>
+        <h3 className="mt-3 text-xl font-semibold tracking-tight text-balance">
           {curso.titulo}
         </h3>
-        <p className="mt-2 text-sm text-tinta-media">{curso.resumo}</p>
-        <p className="mt-4 text-sm text-tinta-suave">
+        <p className="mt-2.5 text-sm leading-relaxed text-tinta-suave">{curso.resumo}</p>
+
+        <p className="mt-5 border-t border-borda pt-4 text-sm text-tinta-suave">
           {curso.modulos.length} módulos · {totalDeAulas} aulas
         </p>
-        <span aria-hidden="true" className="mt-auto pt-4 text-sm font-medium text-marca">
+        <span
+          aria-hidden="true"
+          className="mt-3 text-sm font-semibold text-tinta-media transition-colors group-hover:text-marca"
+        >
           Ver curso →
         </span>
       </Link>

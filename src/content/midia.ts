@@ -50,14 +50,37 @@ export function arquivo(chave: string): string {
  * └──────────────────────────────────────────────────────────────────────────┘
  */
 const IDENTIFICADORES: Record<string, string[]> = {
-  // "Dados e Conceitos fundamentais [Parte 5]" — confirmado no painel.
-  // Faltam as partes 1 a 4; ao inserir, coloque-as ANTES desta.
+  // Confirmado no painel: "Dados e Conceitos fundamentais [Parte 5]".
   'dados-conceitos-fundamentais': ['88496712714cef55dd2eb4a590bc3618'],
   algoritmos: [],
   'de-zero-ao-cem-flix': [],
   'quem-e-o-instrutor': [],
   'privacidade-e-dados-pessoais': [],
 }
+
+/**
+ * AGUARDANDO MAPEAMENTO.
+ *
+ * Identificadores recebidos sem indicação de a qual aula pertencem, na ordem
+ * em que chegaram. Ficam registrados aqui para não se perderem; assim que
+ * soubermos a que aula corresponde cada um, migram para IDENTIFICADORES acima
+ * e esta lista some.
+ *
+ * A ordem de aulas informada foi: apresentação do professor, história da
+ * inteligência artificial, primeira parte prática — o que não corresponde à
+ * estrutura montada a partir dos slides, então o curso também precisa ser
+ * reordenado quando o mapeamento chegar.
+ */
+export const AGUARDANDO_MAPEAMENTO = [
+  '024add77618c677acac29262cb30346f',
+  '7face257fe47462b5cb90470cad0bc5d',
+  'ad3e07bc094a8fbb0f715b9b28f51834',
+  '3b8ee92e31510a0f9b6e34c2b63b4398',
+  '25b12b297ec043e2b1242f81f2b1471c',
+  'e42fa90595806f96ab6d0e860dd5ba59',
+  '4f0bf4fd92e5da7f44b286e1835fbfd7',
+  'fb5e06afa1290f342e864727b223ba7d',
+] as const
 
 /**
  * As partes de uma aula, prontas para o conteúdo.
