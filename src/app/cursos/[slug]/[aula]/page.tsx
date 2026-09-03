@@ -68,7 +68,7 @@ export default async function AulaPage({ params }: Props) {
         </div>
 
         <div className="mt-8">
-          <PlayerDeVideo video={aula.video} titulo={aula.titulo} />
+          <PlayerDeVideo partes={aula.partes} titulo={aula.titulo} />
         </div>
 
         <p className="mt-8 text-lg text-tinta-media text-pretty">{aula.resumo}</p>

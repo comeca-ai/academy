@@ -1,5 +1,4 @@
-import { arquivo } from './midia'
-import { VIDEOS } from './midia'
+import { arquivo, partesDe } from './midia'
 import type { Curso } from './tipos'
 
 /**
@@ -29,7 +28,7 @@ export const deZeroAoCem: Curso = {
           titulo: 'Dados: conceitos fundamentais',
           resumo:
             'Os conceitos fundamentais de dados e por que eles são a base de tudo que a inteligência artificial faz. Como a IA se inspira no aprendizado humano e qual o papel dos dados para a máquina se adaptar e decidir.',
-          video: VIDEOS['dados-conceitos-fundamentais'] ?? null,
+          partes: partesDe('dados-conceitos-fundamentais'),
           duracaoEmMinutos: 0,
           materiais: [
             {
@@ -44,7 +43,7 @@ export const deZeroAoCem: Curso = {
           titulo: 'Algoritmos e modelos preditivos',
           resumo:
             'O que é um algoritmo, o que é um modelo preditivo e como os dois se conectam ao que veio antes. Os tipos de algoritmo, as modalidades de aprendizagem e exemplos de aprendizado de máquina que já fazem parte do cotidiano.',
-          video: VIDEOS['algoritmos'] ?? null,
+          partes: partesDe('algoritmos'),
           duracaoEmMinutos: 0,
           materiais: [
             { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('Algoritmos.pdf') },
@@ -60,7 +59,7 @@ export const deZeroAoCem: Curso = {
           titulo: 'DeZeroAo100Flix: construindo um streaming',
           resumo:
             'O estudo de caso que amarra o curso. Um serviço de streaming registra cada interação — categoria, gênero, ano, elenco, idioma, horário, aparelho e tempo de uso — e é sobre esse histórico que a recomendação é construída.',
-          video: VIDEOS['de-zero-ao-cem-flix'] ?? null,
+          partes: partesDe('de-zero-ao-cem-flix'),
           duracaoEmMinutos: 0,
           materiais: [
             { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('De0ao100Flix.pdf') },
@@ -71,7 +70,7 @@ export const deZeroAoCem: Curso = {
           titulo: 'Precisamos falar sobre privacidade',
           resumo:
             'A contrapartida do que o curso ensina: se o dado é o combustível, entregá-lo tem consequência. O que está em jogo quando serviços registram comportamento, e o que isso significa para quem usa e para quem constrói.',
-          video: VIDEOS['privacidade-e-dados-pessoais'] ?? null,
+          partes: partesDe('privacidade-e-dados-pessoais'),
           duracaoEmMinutos: 0,
           materiais: [
             {
@@ -91,7 +90,7 @@ export const deZeroAoCem: Curso = {
           titulo: 'Quem conduz o curso',
           resumo:
             'Apresentação do instrutor e da bagagem que sustenta o conteúdo do curso.',
-          video: VIDEOS['quem-e-o-instrutor'] ?? null,
+          partes: partesDe('quem-e-o-instrutor'),
           duracaoEmMinutos: 0,
           materiais: [
             {

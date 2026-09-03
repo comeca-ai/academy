@@ -1,3 +1,5 @@
+import type { Parte } from './tipos'
+
 /**
  * ────────────────────────────────────────────────────────────────────────────
  *  PONTO ÚNICO DE CONFIGURAÇÃO DE MÍDIA
@@ -30,20 +32,43 @@ export function arquivo(chave: string): string {
 }
 
 /**
- * Identificadores dos vídeos no Cloudflare Stream, por aula.
- *
- * PENDENTE: preencher com o identificador de 32 caracteres de cada vídeo,
- * copiado do painel do Stream. Enquanto o valor for `null`, a aula é publicada
- * normalmente e aparece sem player — o material de apoio e o texto continuam
- * acessíveis.
+ * ┌──────────────────────────────────────────────────────────────────────────┐
+ * │  PARA COMPLETAR O CURSO: cole aqui os identificadores do Stream.         │
+ * │                                                                          │
+ * │  Cada aula recebe a lista das suas gravações, NA ORDEM em que devem ser  │
+ * │  assistidas. O identificador é o "ID do Vídeo" que aparece no painel do  │
+ * │  Stream, com 32 caracteres.                                              │
+ * │                                                                          │
+ * │  Exemplo com três partes:                                                │
+ * │    algoritmos: [                                                         │
+ * │      '0f1e2d3c4b5a69788796a5b4c3d2e1f0',                                 │
+ * │      'aabbccddeeff00112233445566778899',                                 │
+ * │      '99887766554433221100ffeeddccbbaa',                                 │
+ * │    ],                                                                    │
+ * │                                                                          │
+ * │  Lista vazia = aula publicada sem player, com material e texto intactos. │
+ * └──────────────────────────────────────────────────────────────────────────┘
  */
-export const VIDEOS: Record<string, string | null> = {
-  // PROVISÓRIO: identificador de exemplo, ainda sem confirmação de qual aula
-  // ele é. Está aqui para validar o player de ponta a ponta — confirme ou
-  // troque antes de mostrar o curso a alguém.
-  'dados-conceitos-fundamentais': '88496712714cef55dd2eb4a590bc3618',
-  algoritmos: null,
-  'de-zero-ao-cem-flix': null,
-  'quem-e-o-instrutor': null,
-  'privacidade-e-dados-pessoais': null,
+const IDENTIFICADORES: Record<string, string[]> = {
+  // "Dados e Conceitos fundamentais [Parte 5]" — confirmado no painel.
+  // Faltam as partes 1 a 4; ao inserir, coloque-as ANTES desta.
+  'dados-conceitos-fundamentais': ['88496712714cef55dd2eb4a590bc3618'],
+  algoritmos: [],
+  'de-zero-ao-cem-flix': [],
+  'quem-e-o-instrutor': [],
+  'privacidade-e-dados-pessoais': [],
+}
+
+/**
+ * As partes de uma aula, prontas para o conteúdo.
+ *
+ * Filtra o que não for identificador válido de 32 caracteres, para um valor
+ * digitado errado virar aula sem vídeo em vez de player quebrado na tela.
+ */
+export function partesDe(slugDaAula: string): Parte[] {
+  const ids = IDENTIFICADORES[slugDaAula] ?? []
+  return ids
+    .map((id) => id.trim())
+    .filter((id) => /^[0-9a-f]{32}$/i.test(id))
+    .map((video) => ({ video }))
 }
