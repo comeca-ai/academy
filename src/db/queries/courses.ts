@@ -1,8 +1,8 @@
 import { and, asc, eq, ilike, or } from 'drizzle-orm'
 
 import { getDb } from '@/db/client'
-import { courses, lessons, modules } from '@/db/schema'
-import type { Course, Lesson, Module } from '@/db/schema'
+import { courses, lessonMaterials, lessons, modules } from '@/db/schema'
+import type { Course, Lesson, LessonMaterial, Module } from '@/db/schema'
 
 export type ModuloComAulas = { module: Module; lessons: Lesson[] }
 
@@ -84,5 +84,59 @@ export async function buscarCursoPublicado(slug: string): Promise<CursoCompleto 
     modules: modulos,
     totalDeAulas: todasAsAulas.length,
     duracaoEmSegundos: todasAsAulas.reduce((soma, a) => soma + a.durationSeconds, 0),
+  }
+}
+
+export type AulaEmContexto = {
+  course: Course
+  module: Module
+  lesson: Lesson
+  materials: LessonMaterial[]
+  /** Posição da aula na sequência inteira do curso, começando em 1. */
+  indice: number
+  total: number
+  anterior: Lesson | null
+  proxima: Lesson | null
+}
+
+/**
+ * Uma aula publicada, com o material de apoio e a vizinhança dentro do curso.
+ *
+ * Reaproveita `buscarCursoPublicado` em vez de repetir a montagem da árvore:
+ * o curso inteiro já vem ordenado, e achatá-lo dá a sequência de navegação de
+ * graça. Também garante que aula de curso não publicado nunca abre.
+ */
+export async function buscarAulaPublicada(
+  cursoSlug: string,
+  aulaSlug: string,
+): Promise<AulaEmContexto | null> {
+  const curso = await buscarCursoPublicado(cursoSlug)
+  if (!curso) return null
+
+  const sequencia = curso.modules.flatMap((m) =>
+    m.lessons.map((lesson) => ({ lesson, module: m.module })),
+  )
+
+  const posicao = sequencia.findIndex((item) => item.lesson.slug === aulaSlug)
+  if (posicao === -1) return null
+
+  const atual = sequencia[posicao]
+  if (!atual) return null
+
+  const materiais = await getDb()
+    .select()
+    .from(lessonMaterials)
+    .where(eq(lessonMaterials.lessonId, atual.lesson.id))
+    .orderBy(asc(lessonMaterials.position))
+
+  return {
+    course: curso.course,
+    module: atual.module,
+    lesson: atual.lesson,
+    materials: materiais,
+    indice: posicao + 1,
+    total: sequencia.length,
+    anterior: sequencia[posicao - 1]?.lesson ?? null,
+    proxima: sequencia[posicao + 1]?.lesson ?? null,
   }
 }

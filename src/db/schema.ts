@@ -167,6 +167,31 @@ export const lessons = pgTable(
   ],
 )
 
+export const materialKind = pgEnum('material_kind', ['slides', 'pdf', 'link', 'arquivo'])
+
+/**
+ * Material de apoio de uma aula: slides, PDF, planilha, link externo.
+ *
+ * A URL aponta para onde o arquivo já vive (armazenamento de objetos, CDN),
+ * porque a plataforma serve conteúdo, não hospeda arquivo. Isso mantém o banco
+ * pequeno e deixa a entrega com quem faz isso bem.
+ */
+export const lessonMaterials = pgTable(
+  'lesson_materials',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    lessonId: uuid()
+      .notNull()
+      .references(() => lessons.id, { onDelete: 'cascade' }),
+    title: text().notNull(),
+    kind: materialKind().notNull().default('pdf'),
+    url: text().notNull(),
+    position: integer().notNull(),
+    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex('lesson_materials_lesson_id_position_key').on(t.lessonId, t.position)],
+)
+
 // ── Matrícula e progresso ───────────────────────────────────────────────────
 
 export const enrollmentStatus = pgEnum('enrollment_status', [
@@ -236,6 +261,7 @@ export type Session = typeof sessions.$inferSelect
 export type Course = typeof courses.$inferSelect
 export type Module = typeof modules.$inferSelect
 export type Lesson = typeof lessons.$inferSelect
+export type LessonMaterial = typeof lessonMaterials.$inferSelect
 export type Enrollment = typeof enrollments.$inferSelect
 export type LessonProgress = typeof lessonProgress.$inferSelect
 

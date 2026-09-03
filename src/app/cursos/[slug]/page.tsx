@@ -82,14 +82,19 @@ export default async function CursoPage({ params }: Props) {
                         {modulo.lessons.map((aula) => (
                           <li
                             key={aula.id}
-                            className="flex justify-between gap-4 border-t border-borda pt-2 first:border-0 first:pt-0"
+                            className="border-t border-borda first:border-0"
                           >
-                            <span>{aula.title}</span>
-                            {aula.durationSeconds > 0 ? (
-                              <span className="shrink-0 text-tinta-suave">
-                                {duracaoHumana(aula.durationSeconds)}
-                              </span>
-                            ) : null}
+                            <Link
+                              href={`/cursos/${course.slug}/${aula.slug}`}
+                              className="flex justify-between gap-4 py-2 hover:text-marca"
+                            >
+                              <span>{aula.title}</span>
+                              {aula.durationSeconds > 0 ? (
+                                <span className="shrink-0 text-tinta-suave">
+                                  {duracaoHumana(aula.durationSeconds)}
+                                </span>
+                              ) : null}
+                            </Link>
                           </li>
                         ))}
                       </ul>
