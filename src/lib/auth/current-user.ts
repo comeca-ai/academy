@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import { buscarSessaoValida } from '@/db/queries/sessions'
 import type { Session, User } from '@/db/schema'
+import { bancoConfigurado } from '@/lib/env'
 
 import { NOME_DO_COOKIE, lerToken } from './session'
 
@@ -21,6 +22,9 @@ export type SessaoAtual = { session: Session; user: User }
  * não estar autenticado.
  */
 export const sessaoAtual = cache(async (): Promise<SessaoAtual | null> => {
+  // Sem banco não há sessão para consultar; ninguém está autenticado.
+  if (!bancoConfigurado) return null
+
   const token = (await cookies()).get(NOME_DO_COOKIE)?.value
   if (!token) return null
 

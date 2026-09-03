@@ -31,6 +31,16 @@ export const env = parsed.data
 
 export const isProduction = env.NODE_ENV === 'production'
 
+/**
+ * Se há banco configurado.
+ *
+ * A aplicação sobe sem banco de propósito — serve para `next dev` antes de o
+ * Postgres existir e para uma implantação de vitrine ainda sem infraestrutura.
+ * As telas consultam isto e mostram um aviso claro em vez de estourar erro:
+ * página que quebra não informa nada a quem abriu o link.
+ */
+export const bancoConfigurado = Boolean(env.DATABASE_URL)
+
 export function requireDatabaseUrl(): string {
   if (!env.DATABASE_URL) {
     throw new Error(

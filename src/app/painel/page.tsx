@@ -5,6 +5,16 @@ import { exigirUsuario } from '@/lib/auth/current-user'
 
 export const metadata: Metadata = { title: 'Painel' }
 
+/**
+ * Sempre renderizado por requisição.
+ *
+ * O conteúdo depende de quem está autenticado, e sem isto o Next pode
+ * pré-renderizar a página quando a checagem de sessão termina cedo — por
+ * exemplo numa instalação ainda sem banco. O resultado ficaria congelado no
+ * build e erraria assim que o banco existisse.
+ */
+export const dynamic = 'force-dynamic'
+
 export default async function PainelPage() {
   const usuario = await exigirUsuario('/painel')
 

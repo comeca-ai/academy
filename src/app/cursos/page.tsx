@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
 
+import { AvisoSemBanco } from '@/components/aviso-sem-banco'
 import { Cabecalho } from '@/components/cabecalho'
 import { CartaoDeCurso } from '@/components/cartao-de-curso'
 import { listarCursosPublicados } from '@/db/queries/courses'
+import { bancoConfigurado } from '@/lib/env'
 
 export const metadata: Metadata = {
   title: 'Cursos',
@@ -15,7 +17,7 @@ export default async function CursosPage({
   searchParams: Promise<{ busca?: string }>
 }) {
   const busca = (await searchParams).busca?.trim() ?? ''
-  const cursos = await listarCursosPublicados(busca)
+  const cursos = bancoConfigurado ? await listarCursosPublicados(busca) : []
 
   return (
     <>
@@ -49,7 +51,11 @@ export default async function CursosPage({
           </button>
         </form>
 
-        {cursos.length === 0 ? (
+        {!bancoConfigurado ? (
+          <div className="mt-10">
+            <AvisoSemBanco />
+          </div>
+        ) : cursos.length === 0 ? (
           <p className="mt-10 rounded-lg border border-borda bg-papel-fundo p-6 text-tinta-media">
             {busca
               ? `Nenhum curso encontrado para “${busca}”.`

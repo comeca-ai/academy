@@ -5,12 +5,15 @@ import { notFound } from 'next/navigation'
 import { Cabecalho } from '@/components/cabecalho'
 import { buscarCursoPublicado } from '@/db/queries/courses'
 import { usuarioAtual } from '@/lib/auth/current-user'
+import { bancoConfigurado } from '@/lib/env'
 import { duracaoHumana, plural } from '@/lib/formato'
 
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const curso = await buscarCursoPublicado((await params).slug)
+  const curso = bancoConfigurado
+    ? await buscarCursoPublicado((await params).slug)
+    : null
   if (!curso) return { title: 'Curso não encontrado' }
 
   return {
@@ -20,7 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CursoPage({ params }: Props) {
-  const curso = await buscarCursoPublicado((await params).slug)
+  const curso = bancoConfigurado
+    ? await buscarCursoPublicado((await params).slug)
+    : null
   if (!curso) notFound()
 
   const { course, modules, totalDeAulas, duracaoEmSegundos } = curso

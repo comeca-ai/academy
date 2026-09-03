@@ -15,9 +15,13 @@ import {
   calcularExpiracao,
   opcoesDoCookie,
 } from '@/lib/auth/session'
+import { bancoConfigurado } from '@/lib/env'
 import { destinoSeguro } from '@/lib/rotas'
 
 export type EstadoDoFormulario = { erro?: string }
+
+const SEM_BANCO =
+  'Esta instalação ainda não tem banco de dados configurado, então não é possível criar conta nem entrar.'
 
 const esquemaDeCadastro = z.object({
   name: z.string().trim().min(2, 'Escreva seu nome.').max(120, 'Nome longo demais.'),
@@ -57,6 +61,8 @@ export async function cadastrar(
   _anterior: EstadoDoFormulario,
   formData: FormData,
 ): Promise<EstadoDoFormulario> {
+  if (!bancoConfigurado) return { erro: SEM_BANCO }
+
   const dados = esquemaDeCadastro.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -89,6 +95,8 @@ export async function entrar(
   _anterior: EstadoDoFormulario,
   formData: FormData,
 ): Promise<EstadoDoFormulario> {
+  if (!bancoConfigurado) return { erro: SEM_BANCO }
+
   const dados = esquemaDeLogin.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
