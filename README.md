@@ -4,18 +4,39 @@ Plataforma de aprendizado da Começa.ai. Código proprietário.
 
 ## Estado
 
-Fundação. O que já existe:
+O que já existe:
 
-- Modelo de domínio completo do núcleo (organização, pessoas, catálogo, matrícula, progresso) em `src/db/schema.ts`
+- Catálogo, aulas, player de vídeo e materiais, com o conteúdo versionado em
+  `src/content` e as páginas saindo prontas do build
 - Autenticação de ponta a ponta: cadastro, login, logout, sessão revogável no
   banco, proteção de rota e primeiro dono via `OWNER_EMAIL`
 - Defesas de login: limite de tentativas, resposta de tempo constante e
   bloqueio de redirecionamento aberto — todas com teste
+- Matrícula e progresso: marcar aula concluída, barra de progresso, retomar de
+  onde parou e um painel com os cursos em andamento
 - Configuração validada de ambiente, com falha explícita no ponto de uso
-- Esqueleto Next.js com acessibilidade na base
+- Acessibilidade na base: foco visível, contraste AA e navegação por teclado
 
-O que ainda não existe: catálogo de cursos, autoria, player de vídeo,
-matrícula e progresso. A sequência está em `docs/adr/0001-stack.md`.
+O que ainda não existe: autoria pelo painel, certificado, avaliações e
+relatórios de turma. A sequência está em `docs/adr/0001-stack.md`.
+
+### Por que o progresso é buscado pelo navegador
+
+As páginas do catálogo são estáticas — é o ponto de guardar o conteúdo em
+código. Qualquer leitura de cookie no servidor dentro dessas páginas derruba o
+pré-render inteiro, inclusive quando está escondida num componente comum como
+o cabeçalho. Medido: com uma leitura de sessão no cabeçalho, o build emitia
+1 rota estática; sem ela, 13.
+
+Por isso o que varia por pessoa — o menu da conta e o progresso — é buscado
+depois da hidratação, em `/api/sessao` e `/api/progresso/[curso]`. As duas
+respostas são `private, no-store`: o conteúdo é de uma pessoa só e as rotas
+ficam atrás de CDN.
+
+Ao mexer em `src/components/cabecalho.tsx` ou em qualquer componente presente
+nas páginas de curso, confira o `prerender-manifest.json` depois do build. A
+tabela de rotas do Next marca `●` mesmo quando não emitiu HTML nenhum, então
+ela não serve de prova.
 
 ## Stack
 

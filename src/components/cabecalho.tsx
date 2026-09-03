@@ -1,11 +1,17 @@
 import Link from 'next/link'
 
 import { Marca } from '@/components/marca'
-import { usuarioAtual } from '@/lib/auth/current-user'
+import { NavDaConta } from '@/components/nav-da-conta'
 
-export async function Cabecalho() {
-  const usuario = await usuarioAtual()
-
+/**
+ * Cabeçalho de todas as páginas.
+ *
+ * Componente de servidor sem nenhuma API dinâmica de propósito: ele aparece
+ * nas páginas do catálogo, que saem prontas do build. Ler o cookie de sessão
+ * aqui bastaria para tirar o site inteiro do pré-render, então a parte que
+ * varia por pessoa fica isolada em `NavDaConta`, do lado do cliente.
+ */
+export function Cabecalho() {
   return (
     <header className="sticky top-0 z-40 border-b border-borda bg-fundo/85 backdrop-blur">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-3.5">
@@ -17,23 +23,7 @@ export async function Cabecalho() {
           <Link href="/cursos" className="font-medium text-tinta-media hover:text-marca">
             Cursos
           </Link>
-          {usuario ? (
-            <Link href="/painel" className="font-medium text-tinta-media hover:text-marca">
-              Meu painel
-            </Link>
-          ) : (
-            <>
-              <Link href="/entrar" className="font-medium text-tinta-media hover:text-marca">
-                Entrar
-              </Link>
-              <Link
-                href="/cadastro"
-                className="rounded-md bg-marca-fundo px-3.5 py-2 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
-              >
-                Criar conta
-              </Link>
-            </>
-          )}
+          <NavDaConta />
         </nav>
       </div>
     </header>

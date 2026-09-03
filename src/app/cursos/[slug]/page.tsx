@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Cabecalho } from '@/components/cabecalho'
+import { ConteudoDoCurso } from '@/components/conteudo-do-curso'
 import { buscarCurso, todosOsCursos } from '@/content'
 import { duracaoHumana, plural } from '@/lib/formato'
 
@@ -25,8 +26,6 @@ export default async function CursoPage({ params }: Props) {
 
   const { curso, totalDeAulas, duracaoEmMinutos } = dados
   const primeira = curso.modulos[0]?.aulas[0]
-
-  let contador = 0
 
   return (
     <>
@@ -67,58 +66,18 @@ export default async function CursoPage({ params }: Props) {
 
       <main id="conteudo" className="mx-auto max-w-5xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-[1fr_280px]">
-          <section aria-labelledby="conteudo-do-curso">
-            <h2
-              id="conteudo-do-curso"
-              className="text-xs font-semibold uppercase tracking-widest text-tinta-suave"
-            >
-              Conteúdo do curso
-            </h2>
-
-            <ol className="mt-6 flex list-none flex-col gap-6">
-              {curso.modulos.map((modulo, indice) => (
-                <li key={modulo.titulo}>
-                  <h3 className="flex items-baseline gap-2.5 text-lg font-semibold tracking-tight">
-                    <span className="text-sm font-mono text-marca">
-                      {String(indice + 1).padStart(2, '0')}
-                    </span>
-                    {modulo.titulo}
-                  </h3>
-
-                  <ul className="mt-3 flex list-none flex-col overflow-hidden rounded-xl border border-borda">
-                    {modulo.aulas.map((aula) => {
-                      contador += 1
-                      return (
-                        <li key={aula.slug} className="border-b border-borda last:border-0">
-                          <Link
-                            href={`/cursos/${curso.slug}/${aula.slug}`}
-                            className="flex items-center justify-between gap-4 bg-superficie px-5 py-4 transition-colors hover:bg-superficie-alta"
-                          >
-                            <span className="flex items-center gap-3.5">
-                              <span className="font-mono text-sm text-tinta-suave">
-                                {String(contador).padStart(2, '0')}
-                              </span>
-                              <span className="font-medium">{aula.titulo}</span>
-                              {aula.provisoria ? (
-                                <span className="rounded bg-superficie-alta px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-tinta-suave">
-                                  título a definir
-                                </span>
-                              ) : null}
-                            </span>
-                            {aula.duracaoEmMinutos > 0 ? (
-                              <span className="shrink-0 text-sm text-tinta-suave">
-                                {duracaoHumana(aula.duracaoEmMinutos * 60)}
-                              </span>
-                            ) : null}
-                          </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </li>
-              ))}
-            </ol>
-          </section>
+          <ConteudoDoCurso
+            curso={curso.slug}
+            modulos={curso.modulos.map((modulo) => ({
+              titulo: modulo.titulo,
+              aulas: modulo.aulas.map((aula) => ({
+                slug: aula.slug,
+                titulo: aula.titulo,
+                duracaoEmMinutos: aula.duracaoEmMinutos,
+                provisoria: aula.provisoria ?? false,
+              })),
+            }))}
+          />
 
           <aside>
             <div className="rounded-xl border border-borda bg-superficie p-6">

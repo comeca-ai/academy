@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Cabecalho } from '@/components/cabecalho'
+import { ConclusaoDaAula } from '@/components/conclusao-da-aula'
 import { MateriaisDaAula } from '@/components/materiais-da-aula'
 import { PlayerDeVideo } from '@/components/player-de-video'
 import { buscarAula, todosOsCaminhos } from '@/content'
@@ -95,6 +96,12 @@ export default async function AulaPage({ params }: Props) {
         ) : null}
 
         <MateriaisDaAula materiais={aula.materiais} />
+
+        <ConclusaoDaAula
+          curso={curso.slug}
+          aula={aula.slug}
+          destino={`/cursos/${curso.slug}/${aula.slug}`}
+        />
 
         <nav
           aria-label="Navegação entre aulas"
