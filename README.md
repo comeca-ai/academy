@@ -43,21 +43,51 @@ banco existir.
 ## Ligando o banco em produção
 
 O catálogo, as aulas e os materiais são conteúdo estático e funcionam sem
-banco. Cadastro, login e progresso precisam de um Postgres. Para ligá-lo:
+banco. Cadastro, login e progresso precisam de um Postgres.
 
-1. Provisione um Postgres (PlanetScale pelo painel do Cloudflare, Neon,
-   Supabase — qualquer um serve) e copie a string de conexão.
-2. Na Vercel, em Settings → Environment Variables, defina as duas:
-   - `DATABASE_URL` — a string de conexão, com SSL
+O banco em uso é um **Prisma Postgres** (`db.prisma.io`, região us-east-1),
+alcançado pela string de conexão direta — Postgres puro, sem Accelerate e sem
+o cliente do Prisma. O ORM continua sendo o Drizzle; para a aplicação é um
+Postgres como qualquer outro.
+
+Para ligar o banco numa implantação:
+
+1. Na Vercel, em Settings → Environment Variables, defina as duas em
+   Production, Preview e Development:
+   - `DATABASE_URL` — a string de conexão direta, terminando em `?sslmode=require`
    - `APP_SECRET` — gerada com `openssl rand -base64 32`
-3. Aplique o schema, de um destes jeitos:
+2. Aplique o schema, de um destes jeitos:
    - `DATABASE_URL='...' npm run db:migrate` de uma máquina que alcance o banco
    - ou cole o conteúdo de `src/db/migrations/0000_*.sql` no console SQL do
      provedor
-4. Republique na Vercel (qualquer push serve, ou Redeploy no painel).
+3. Republique na Vercel (qualquer push serve, ou Redeploy no painel).
 
 Sem `APP_SECRET` o login falha mesmo com banco configurado — as duas
 variáveis são necessárias juntas.
+
+`sslmode=require` é obrigatório: o Prisma Postgres só aceita conexão com TLS.
+O driver interpreta esse modo como TLS sem verificação de CA, que é a
+semântica padrão do Postgres para `require`.
+
+### Se o schema for aplicado fora do `db:migrate`
+
+Aplicar o SQL direto no console deixa o Drizzle sem saber que a migração já
+rodou, e o próximo `db:migrate` tentaria recriar tudo. Para manter o controle
+coerente, registre a migração junto:
+
+```sql
+CREATE SCHEMA IF NOT EXISTS "drizzle";
+CREATE TABLE IF NOT EXISTS "drizzle"."__drizzle_migrations" (
+  id SERIAL PRIMARY KEY,
+  hash text NOT NULL,
+  created_at bigint
+);
+INSERT INTO "drizzle"."__drizzle_migrations" (hash, created_at)
+VALUES ('<sha256 do arquivo .sql>', <campo "when" do _journal.json>);
+```
+
+O hash é o `sha256sum` do arquivo de migração inteiro, e `created_at` é o
+`when` da entrada correspondente em `src/db/migrations/meta/_journal.json`.
 
 ## Comandos
 
