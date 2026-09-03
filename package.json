@@ -4,7 +4,7 @@
   "private": true,
   "description": "Plataforma de aprendizado da Começa.ai",
   "engines": {
-    "node": ">=22"
+    "node": ">=22 <25"
   },
   "scripts": {
     "dev": "next dev",
