@@ -40,6 +40,25 @@ Sem `DATABASE_URL` o servidor sobe assim mesmo — só falha ao tocar o banco, c
 a mensagem dizendo o que falta. Isso mantém `next dev` utilizável antes de o
 banco existir.
 
+## Ligando o banco em produção
+
+O catálogo, as aulas e os materiais são conteúdo estático e funcionam sem
+banco. Cadastro, login e progresso precisam de um Postgres. Para ligá-lo:
+
+1. Provisione um Postgres (PlanetScale pelo painel do Cloudflare, Neon,
+   Supabase — qualquer um serve) e copie a string de conexão.
+2. Na Vercel, em Settings → Environment Variables, defina as duas:
+   - `DATABASE_URL` — a string de conexão, com SSL
+   - `APP_SECRET` — gerada com `openssl rand -base64 32`
+3. Aplique o schema, de um destes jeitos:
+   - `DATABASE_URL='...' npm run db:migrate` de uma máquina que alcance o banco
+   - ou cole o conteúdo de `src/db/migrations/0000_*.sql` no console SQL do
+     provedor
+4. Republique na Vercel (qualquer push serve, ou Redeploy no painel).
+
+Sem `APP_SECRET` o login falha mesmo com banco configurado — as duas
+variáveis são necessárias juntas.
+
 ## Comandos
 
 | Comando | O que faz |

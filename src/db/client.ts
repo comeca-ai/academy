@@ -19,7 +19,13 @@ type Database = ReturnType<typeof criarCliente>
 
 function criarCliente() {
   const sql = postgres(requireDatabaseUrl(), {
-    max: isProduction ? 10 : 3,
+    // Uma conexão por instância em produção.
+    //
+    // Em ambiente serverless cada invocação roda no seu próprio processo, e um
+    // pool de 10 por instância multiplica pelo número de instâncias ativas —
+    // é assim que se estoura o limite de conexões do banco num pico de acesso.
+    // Com 1, o número de conexões acompanha o número de instâncias.
+    max: isProduction ? 1 : 3,
     idle_timeout: 20,
     connect_timeout: 10,
   })
