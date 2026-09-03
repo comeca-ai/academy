@@ -28,13 +28,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap"
         />
         <style>{`
           :root {
             --fonte-display: 'Fraunces';
             --fonte-corpo: 'IBM Plex Sans';
             --fonte-mono: 'JetBrains Mono';
+            --fonte-marca: 'Michroma';
           }
         `}</style>
       </head>

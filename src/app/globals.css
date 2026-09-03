@@ -16,6 +16,7 @@
   --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--fonte-display), Georgia, serif;
   --font-mono: var(--fonte-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-marca: var(--fonte-marca), var(--fonte-corpo), sans-serif;
 
   /* Camada 1 — primitivas */
   --color-carvao-950: #15171e;
