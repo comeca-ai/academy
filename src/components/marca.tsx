@@ -1,44 +1,32 @@
 /**
- * A marca do curso, reconstruída em CSS.
+ * A assinatura da marca, no mesmo arranjo do site do instrutor: o monograma
+ * dentro de um disco claro, seguido do nome.
  *
- * É o mesmo bloco que assina os slides: o selo "0-100", o nome por extenso e
- * as barras. Fica em componente para o cabeçalho, a home e qualquer peça
- * futura usarem exatamente o mesmo desenho.
+ * O monograma é desenhado em texto, não em imagem — o arquivo original do
+ * símbolo ainda não está no repositório. Quando ele chegar, troca-se apenas o
+ * miolo deste componente e a assinatura se atualiza em toda a plataforma.
  */
 export function Marca({ compacta = false }: { compacta?: boolean }) {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <span className="rounded-[3px] bg-tinta px-1.5 py-0.5 text-sm font-black leading-none tracking-tight text-fundo">
-        0-100
+      <span
+        aria-hidden="true"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tinta"
+      >
+        <span className="font-display text-[15px] font-semibold leading-none tracking-tight text-fundo">
+          JE
+        </span>
       </span>
       {compacta ? null : (
-        <span className="flex flex-col gap-1 leading-none">
-          <span className="text-sm font-medium tracking-tight">de zero ao cem</span>
-          <Barras />
+        <span className="flex flex-col leading-none">
+          <span className="font-display text-[19px] font-semibold tracking-tight">
+            Jhonata Emerick
+          </span>
+          <span className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-tinta-suave">
+            Academy
+          </span>
         </span>
       )}
-    </span>
-  )
-}
-
-/**
- * As barras verticais sob o nome. Decorativas: escondidas de leitor de tela,
- * já que não carregam informação que o texto ao lado não dê.
- */
-function Barras() {
-  // Larguras irregulares fixas — um padrão aleatório mudaria a cada render e
-  // faria a marca "piscar" diferente entre servidor e cliente.
-  const larguras = [2, 1, 1, 3, 1, 2, 1, 1, 2, 3, 1, 1, 2, 1, 3, 1, 1, 2]
-
-  return (
-    <span aria-hidden="true" className="flex h-2 items-end gap-[2px]">
-      {larguras.map((largura, i) => (
-        <span
-          key={i}
-          className="h-full bg-tinta-suave"
-          style={{ width: `${largura}px` }}
-        />
-      ))}
     </span>
   )
 }

@@ -14,12 +14,12 @@ export default function Home() {
       <Cabecalho />
 
       <main id="conteudo">
-        <section className="grade border-b border-borda">
+        <section className="halo border-b border-borda">
           <div className="mx-auto max-w-3xl px-6 pb-24 pt-24 sm:pt-32">
             <p className="text-xs font-semibold uppercase tracking-widest text-marca">
               Começa.ai Academy
             </p>
-            <h1 className="mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-balance sm:text-6xl">
+            <h1 className="font-display mt-5 text-[2.75rem] font-bold leading-[1.05] tracking-tight text-balance sm:text-6xl">
               Inteligência artificial
               <br />
               explicada do começo
@@ -34,7 +34,7 @@ export default function Home() {
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/cursos/${destaque.slug}`}
-                  className="rounded-md bg-marca px-6 py-3 font-semibold text-fundo transition-colors hover:bg-marca-forte"
+                  className="rounded-md bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
                 >
                   Começar agora
                 </Link>
@@ -77,7 +77,7 @@ export default function Home() {
               >
                 Quem ensina
               </h2>
-              <p className="mt-4 text-2xl font-semibold tracking-tight">
+              <p className="font-display mt-4 text-2xl font-semibold tracking-tight">
                 {destaque.instrutor.nome}
               </p>
               <p className="mt-1 text-marca">{destaque.instrutor.titulo}</p>

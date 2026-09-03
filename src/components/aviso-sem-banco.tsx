@@ -7,7 +7,7 @@
  */
 export function AvisoSemBanco() {
   return (
-    <div className="rounded-lg border border-borda bg-papel-fundo p-6">
+    <div className="rounded-lg border border-borda bg-superficie p-6">
       <h2 className="font-semibold">Catálogo indisponível</h2>
       <p className="mt-2 text-tinta-media">
         Esta instalação ainda não tem banco de dados configurado, então não há

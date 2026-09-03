@@ -7,26 +7,27 @@
  * Camada 2 — semânticas: os papéis que a interface consome. Componente nenhum
  * usa primitiva direto, então trocar a identidade é reescrever a camada 2.
  *
- * A identidade vem do próprio curso: fundo quase preto, verde de sinalização,
- * grade em perspectiva e tipografia pesada — o mesmo vocabulário dos slides,
- * para o site e a aula parecerem a mesma coisa.
+ * A identidade é a mesma do site do instrutor: fundo quase preto levemente
+ * azulado, azul royal como cor de marca, serifa de display e monoespaçada
+ * para rótulos técnicos. A Academy é extensão daquela marca, não uma marca
+ * nova.
  */
 @theme {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
+  --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--fonte-display), Georgia, serif;
+  --font-mono: var(--fonte-mono), ui-monospace, SFMono-Regular, monospace;
 
   /* Camada 1 — primitivas */
-  --color-carvao-950: oklch(0.16 0.008 150);
-  --color-carvao-900: oklch(0.21 0.009 150);
-  --color-carvao-800: oklch(0.27 0.010 150);
-  --color-carvao-700: oklch(0.36 0.010 150);
-  --color-cinza-400: oklch(0.72 0.008 150);
-  --color-cinza-200: oklch(0.88 0.005 150);
-  --color-neve: oklch(0.98 0.002 150);
-  --color-verde-400: oklch(0.82 0.20 148);
-  --color-verde-500: oklch(0.74 0.21 148);
-  --color-verde-600: oklch(0.64 0.19 148);
+  --color-carvao-950: #15171e;
+  --color-carvao-900: #1c1f28;
+  --color-carvao-800: #262a35;
+  --color-carvao-700: #363b49;
+  --color-areia-400: #8b8a82;
+  --color-areia-200: #c9c8bd;
+  --color-areia-50: #f2f1ea;
+  --color-royal-600: #2a3fbf;
+  --color-royal-500: #3d53d6;
+  --color-royal-300: #8b9bf0;
 
   /* Camada 2 — semânticas */
   --color-fundo: var(--color-carvao-950);
@@ -34,21 +35,18 @@
   --color-superficie-alta: var(--color-carvao-800);
   --color-borda: var(--color-carvao-800);
   --color-borda-forte: var(--color-carvao-700);
-  --color-tinta: var(--color-neve);
-  --color-tinta-media: var(--color-cinza-200);
-  --color-tinta-suave: var(--color-cinza-400);
-  --color-marca: var(--color-verde-400);
-  --color-marca-forte: var(--color-verde-500);
-  --color-marca-fundo: var(--color-verde-600);
+  --color-tinta: var(--color-areia-50);
+  --color-tinta-media: var(--color-areia-200);
+  --color-tinta-suave: var(--color-areia-400);
+  /* Azul claro para TEXTO sobre fundo escuro: o royal cheio não alcança
+     contraste legível em corpo de texto. */
+  --color-marca: var(--color-royal-300);
+  /* Royal cheio para PREENCHIMENTO, sempre com texto claro por cima. */
+  --color-marca-fundo: var(--color-royal-600);
+  --color-marca-fundo-forte: var(--color-royal-500);
 }
 
-/**
- * Base de 17px em vez dos 16px do padrão. O conteúdo aqui é lido por períodos
- * longos e o ganho de legibilidade compensa o espaço. Toda a escala é
- * relativa, então esta linha reescala a interface inteira.
- */
 :root {
-  font-size: 17px;
   color-scheme: dark;
 }
 
@@ -59,47 +57,24 @@ body {
 }
 
 /**
- * A grade em perspectiva dos slides, reconstruída em CSS.
- *
- * São duas camadas: um brilho verde no topo e uma malha que desaparece para
- * baixo via máscara. Puramente decorativa e sem custo de imagem.
+ * O halo azul do topo das seções, como no site do instrutor. Decorativo e sem
+ * custo de imagem.
  */
-.grade {
+.halo {
   position: relative;
   isolation: isolate;
 }
 
-.grade::before {
+.halo::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(
-      120% 70% at 50% 0%,
-      color-mix(in oklch, var(--color-verde-600) 22%, transparent) 0%,
-      transparent 60%
-    );
-}
-
-.grade::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(
-      to right,
-      color-mix(in oklch, var(--color-cinza-400) 12%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in oklch, var(--color-cinza-400) 12%, transparent) 1px,
-      transparent 1px
-    );
-  background-size: 56px 56px;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
+  background: radial-gradient(
+    110% 60% at 50% 0%,
+    color-mix(in oklab, var(--color-royal-600) 30%, transparent) 0%,
+    transparent 62%
+  );
 }
 
 /* Requisito de acessibilidade, não enfeite: quem navega por teclado precisa
@@ -111,7 +86,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklch, var(--color-verde-500) 35%, transparent);
+  background: color-mix(in oklab, var(--color-royal-500) 45%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

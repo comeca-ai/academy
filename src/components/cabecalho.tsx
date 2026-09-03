@@ -28,7 +28,7 @@ export async function Cabecalho() {
               </Link>
               <Link
                 href="/cadastro"
-                className="rounded-md bg-marca px-3.5 py-2 font-semibold text-fundo transition-colors hover:bg-marca-forte"
+                className="rounded-md bg-marca-fundo px-3.5 py-2 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
               >
                 Criar conta
               </Link>

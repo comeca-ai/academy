@@ -20,12 +20,12 @@ export default function InstrutorPage() {
     <>
       <Cabecalho />
 
-      <section className="grade border-b border-borda">
+      <section className="halo border-b border-borda">
         <div className="mx-auto max-w-3xl px-6 pb-16 pt-16">
           <p className="text-xs font-semibold uppercase tracking-widest text-marca">
             Quem conduz os cursos
           </p>
-          <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
+          <h1 className="font-display mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
             {instrutor.nome}
           </h1>
           <p className="mt-4 text-lg text-tinta-media">{instrutor.titulo}</p>
@@ -75,7 +75,7 @@ export default function InstrutorPage() {
 
         <Link
           href="/cursos"
-          className="mt-12 inline-block rounded-md bg-marca px-6 py-3 font-semibold text-fundo transition-colors hover:bg-marca-forte"
+          className="mt-12 inline-block rounded-md bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
         >
           Ver os cursos
         </Link>

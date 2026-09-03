@@ -51,7 +51,7 @@ export default async function AulaPage({ params }: Props) {
         </nav>
 
         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-balance">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-balance">
             {aula.titulo}
           </h1>
           <p className="font-mono text-sm text-tinta-suave">
@@ -69,7 +69,7 @@ export default async function AulaPage({ params }: Props) {
           className="mt-4 h-1 w-full overflow-hidden rounded-full bg-superficie-alta"
         >
           <div
-            className="h-full rounded-full bg-marca"
+            className="h-full rounded-full bg-marca-fundo"
             style={{ width: `${(indice / total) * 100}%` }}
           />
         </div>
@@ -114,7 +114,7 @@ export default async function AulaPage({ params }: Props) {
           {proxima ? (
             <Link
               href={`/cursos/${curso.slug}/${proxima.slug}`}
-              className="rounded-md bg-marca px-5 py-3 font-semibold text-fundo transition-colors hover:bg-marca-forte"
+              className="rounded-md bg-marca-fundo px-5 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               {proxima.titulo} →
             </Link>

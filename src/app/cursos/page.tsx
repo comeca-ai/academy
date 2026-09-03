@@ -21,7 +21,7 @@ export default async function CursosPage({
     <>
       <Cabecalho />
       <main id="conteudo" className="mx-auto max-w-5xl px-6 py-12">
-        <h1 className="text-3xl font-semibold tracking-tight">Cursos</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight">Cursos</h1>
         <p className="mt-2 text-tinta-media">
           Comece por onde fizer sentido para você. Cada curso é dividido em
           módulos curtos.
@@ -39,18 +39,18 @@ export default async function CursosPage({
             type="search"
             defaultValue={busca}
             placeholder="Buscar por assunto"
-            className="w-full max-w-sm rounded-md border border-borda bg-papel px-3 py-2.5 outline-none focus:border-marca"
+            className="w-full max-w-sm rounded-md border border-borda bg-superficie px-3 py-2.5 outline-none focus:border-marca"
           />
           <button
             type="submit"
-            className="rounded-md border border-borda px-4 py-2.5 font-medium hover:bg-papel-fundo"
+            className="rounded-md border border-borda px-4 py-2.5 font-medium hover:bg-superficie"
           >
             Buscar
           </button>
         </form>
 
         {cursos.length === 0 ? (
-          <p className="mt-10 rounded-lg border border-borda bg-papel-fundo p-6 text-tinta-media">
+          <p className="mt-10 rounded-lg border border-borda bg-superficie p-6 text-tinta-media">
             Nenhum curso encontrado para “{busca}”.
           </p>
         ) : (

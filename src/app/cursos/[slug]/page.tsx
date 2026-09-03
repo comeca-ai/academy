@@ -32,7 +32,7 @@ export default async function CursoPage({ params }: Props) {
     <>
       <Cabecalho />
 
-      <section className="grade border-b border-borda">
+      <section className="halo border-b border-borda">
         <div className="mx-auto max-w-5xl px-6 pb-16 pt-14">
           <Link
             href="/cursos"
@@ -41,7 +41,7 @@ export default async function CursoPage({ params }: Props) {
             ← Todos os cursos
           </Link>
 
-          <h1 className="mt-6 text-4xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl">
+          <h1 className="font-display mt-6 text-4xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl">
             {curso.titulo}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-tinta-media text-pretty">
@@ -57,7 +57,7 @@ export default async function CursoPage({ params }: Props) {
           {primeira ? (
             <Link
               href={`/cursos/${curso.slug}/${primeira.slug}`}
-              className="mt-7 inline-block rounded-md bg-marca px-6 py-3 font-semibold text-fundo transition-colors hover:bg-marca-forte"
+              className="mt-7 inline-block rounded-md bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               Começar pela primeira aula
             </Link>
