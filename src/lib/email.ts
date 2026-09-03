@@ -1,12 +1,13 @@
 import { emailConfigurado, env, isProduction } from './env'
 
 /**
- * Envio de e-mail transacional, via Resend.
+ * Envio de e-mail transacional, via Cloudflare Email Service.
  *
- * Cloudflare não tem serviço equivalente: Email Routing encaminha e-mail
- * recebido para uma caixa de entrada, não envia e-mail a partir do servidor.
- * Por isso esta é uma integração à parte, fora do Cloudflare que o resto da
- * plataforma usa para vídeo e arquivo.
+ * Fica no mesmo Cloudflare que a plataforma já usa para vídeo (Stream) e
+ * arquivo (R2): uma conta, um painel, um lugar só para girar credencial. O
+ * serviço de envio (Email Sending) é distinto do Email Routing — Routing
+ * encaminha e-mail recebido para uma caixa; Sending dispara e-mail a partir
+ * do servidor, que é o que a recuperação de senha precisa.
  *
  * Silenciosa por design quando falha. Quem chama isto está numa rota que
  * nunca deve revelar se um e-mail existe ou se o envio funcionou — a pessoa
@@ -25,28 +26,29 @@ type Email = {
 export async function enviarEmail(email: Email): Promise<void> {
   if (!emailConfigurado) {
     // Em desenvolvimento, o corpo no console — link de redefinição incluído —
-    // é o que permite testar o fluxo inteiro sem uma conta no Resend. Em
-    // produção isso seria uma instalação mal configurada, e o link não entra
-    // no log: um link de redefinição vale como credencial por 30 minutos, e
-    // log de servidor costuma ir para lugares com mais gente vendo do que uma
-    // caixa de entrada.
+    // é o que permite testar o fluxo inteiro sem credencial. Em produção isso
+    // é instalação mal configurada, e o link não entra no log: um link de
+    // redefinição vale como credencial por 30 minutos, e log de servidor
+    // costuma ir para lugares com mais gente vendo do que uma caixa de entrada.
     if (isProduction) {
-      console.error('[email] RESEND_API_KEY/EMAIL_REMETENTE não configurados em produção.')
+      console.error('[email] CLOUDFLARE_EMAIL_TOKEN não configurado em produção.')
     } else {
       console.warn(`[email] Envio não configurado. Corpo do e-mail para ${email.para}:\n${email.texto}`)
     }
     return
   }
 
+  const url = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/email/sending/send`
+
   try {
-    const resposta = await fetch('https://api.resend.com/emails', {
+    const resposta = await fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${env.CLOUDFLARE_EMAIL_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: env.EMAIL_REMETENTE,
+        from: { address: env.EMAIL_REMETENTE, name: 'Começa.ai' },
         to: email.para,
         subject: email.assunto,
         text: email.texto,
@@ -55,7 +57,21 @@ export async function enviarEmail(email: Email): Promise<void> {
     })
 
     if (!resposta.ok) {
-      console.error(`[email] Resend recusou o envio: ${resposta.status} ${await resposta.text()}`)
+      console.error(`[email] Cloudflare recusou o envio: ${resposta.status} ${await resposta.text()}`)
+      return
+    }
+
+    // A API responde 200 mesmo quando não envia — por exemplo, remetente com
+    // domínio não verificado devolve success:false. Só o status HTTP não basta
+    // para saber que o e-mail saiu de fato.
+    const corpo = (await resposta.json().catch(() => null)) as
+      | { success?: boolean; errors?: Array<{ message?: string }> }
+      | null
+    if (corpo?.success === false) {
+      const motivo =
+        corpo.errors?.map((e) => e.message).filter(Boolean).join('; ') ||
+        'motivo não informado'
+      console.error(`[email] Cloudflare não enviou: ${motivo}`)
     }
   } catch (erro) {
     console.error('[email] Falha de rede ao enviar e-mail:', erro)

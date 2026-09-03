@@ -137,19 +137,23 @@ Sem isto, "esqueci a senha" continua funcionando — só que o link de
 redefinição sai no log do servidor em vez do e-mail da pessoa. Serve para
 testar o fluxo, não para uma instalação real.
 
-Cloudflare, que hospeda vídeo e arquivo desta plataforma, não tem serviço de
-e-mail transacional: Email Routing encaminha e-mail *recebido* para uma caixa
-de entrada, não envia e-mail a partir do servidor. Por isso este é o único
-pedaço da infraestrutura que não é Cloudflare — usamos [Resend](https://resend.com).
+Usamos o **Cloudflare Email Service** (Email Sending) — o mesmo Cloudflare que
+hospeda vídeo e arquivo, então é uma conta e um painel só. Cuidado para não
+confundir com Email Routing: Routing encaminha e-mail *recebido* para uma
+caixa; Sending dispara e-mail *a partir do servidor*, que é o que a
+recuperação de senha usa.
 
-1. Crie uma conta no Resend e verifique um domínio de envio (registro DNS no
-   provedor do domínio — leva minutos a se propagar).
-2. Gere uma API key.
+1. Em Cloudflare → Email Service → Sending, verifique o domínio de envio
+   (registros DNS no domínio — levam minutos a propagar).
+2. Gere um API token com permissão de envio de e-mail.
 3. Na Vercel, defina em Production, Preview e Development:
-   - `RESEND_API_KEY` — a chave gerada
-   - `EMAIL_REMETENTE` — endereço no domínio verificado, formato
-     `Nome <endereco@dominio>`
+   - `CLOUDFLARE_EMAIL_TOKEN` — o token gerado (o único obrigatório)
 4. Redeploy.
+
+Conta (`CLOUDFLARE_ACCOUNT_ID`) e remetente (`EMAIL_REMETENTE`, padrão
+`noreply@comeca.ai`) já vêm com valor no código; defina-os no ambiente só para
+sobrescrever. O envio a partir da Vercel exige o plano Workers Paid do
+Cloudflare para mandar e-mail a qualquer destinatário.
 
 As duas variáveis são exigidas juntas — falta uma, o envio real não acontece,
 mesmo com a outra configurada.
