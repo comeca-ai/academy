@@ -71,6 +71,6 @@ export const deZeroAoCem: Curso = {
   materiais: MATERIAIS_DO_CURSO.map((material) => ({
     titulo: material.titulo,
     tipo: material.tipo,
-    url: arquivo(material.chave),
+    url: 'chave' in material ? arquivo(material.chave) : material.url,
   })),
 }

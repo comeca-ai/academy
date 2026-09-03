@@ -119,6 +119,15 @@ export const SEQUENCIA: ItemDaSequencia[] = [
  */
 
 /**
+ * Um material do curso, hospedado no R2 (`chave`) ou em link externo (`url`).
+ * O restante do conteúdo não distingue os dois: ambos viram `Material.url` —
+ * só a origem do endereço muda.
+ */
+export type MaterialDoCurso =
+  | { titulo: string; tipo: Material['tipo']; chave: string }
+  | { titulo: string; tipo: Material['tipo']; url: string }
+
+/**
  * Material que vale para o curso inteiro.
  *
  * Os dois decks pertencem, pelo mural, à aula "Algoritmos e Modelos
@@ -130,8 +139,16 @@ export const SEQUENCIA: ItemDaSequencia[] = [
  * publicado no FebrabanTech, postado em 19/02 como material de apoio, separado
  * da aula "Ética e Privacidade" do mesmo dia. O rótulo diz isso, para ninguém
  * abrir esperando a aula.
+ *
+ * O tutorial e o artigo da Exame são as outras duas postagens do mural que
+ * não são aula nem têm PDF no bucket — só o link. As URLs vieram da camada de
+ * link do PDF do mural, não de OCR do texto truncado na tela.
+ *
+ * Ficou de fora o artigo "OpenAI e Anthropic…": o mural anexa só imagem e um
+ * PDF que não está no bucket, sem link externo — nada para apontar aqui sem
+ * inventar endereço.
  */
-export const MATERIAIS_DO_CURSO: { titulo: string; tipo: Material['tipo']; chave: string }[] = [
+export const MATERIAIS_DO_CURSO: MaterialDoCurso[] = [
   { titulo: 'Algoritmos — slides da aula', tipo: 'slides', chave: 'Algoritmos.pdf' },
   { titulo: 'De Zero ao 100 Flix — slides da aula', tipo: 'slides', chave: 'De0ao100Flix.pdf' },
   {
@@ -140,6 +157,16 @@ export const MATERIAIS_DO_CURSO: { titulo: string; tipo: Material['tipo']; chave
     chave: 'Precisamos falar sobre privacidade.pdf',
   },
   { titulo: 'Biografia do instrutor', tipo: 'pdf', chave: 'BiografiadoInstrutor.pdf' },
+  {
+    titulo: 'Tutorial: crie sua conta no ChatGPT',
+    tipo: 'link',
+    url: 'https://www.ojoiodotrigo.com.br/c/crie-sua-conta-no-chatgpt',
+  },
+  {
+    titulo: 'Artigo: Integrar para entregar (Exame)',
+    tipo: 'link',
+    url: 'https://exame.com/revista-exame/integrar-para-entregar/',
+  },
 ]
 
 /**
