@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const PILARES = [
   {
     titulo: 'Cursos com estrutura clara',
@@ -30,6 +32,21 @@ export default function Home() {
         está de pé: modelo de domínio, autenticação e as decisões de arquitetura
         registradas em <code className="text-base">docs/adr</code>.
       </p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          href="/cadastro"
+          className="rounded-md bg-marca px-5 py-2.5 font-medium text-papel hover:bg-marca-forte"
+        >
+          Criar conta
+        </Link>
+        <Link
+          href="/entrar"
+          className="rounded-md border border-borda px-5 py-2.5 font-medium hover:bg-papel-fundo"
+        >
+          Entrar
+        </Link>
+      </div>
 
       <ul className="mt-12 grid gap-5 sm:grid-cols-3">
         {PILARES.map((pilar) => (

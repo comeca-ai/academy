@@ -8,7 +8,8 @@ const compat = new FlatCompat({
 
 const config = [
   {
-    ignores: ['.next/**', 'node_modules/**', 'src/db/migrations/**'],
+    // next-env.d.ts é gerado pelo Next a cada build e não deve ser editado.
+    ignores: ['.next/**', 'node_modules/**', 'src/db/migrations/**', 'next-env.d.ts'],
   },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
