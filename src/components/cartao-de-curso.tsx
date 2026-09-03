@@ -12,7 +12,8 @@ export function CartaoDeCurso({ curso }: { curso: Curso }) {
         href={`/cursos/${curso.slug}`}
         className="group flex h-full flex-col rounded-xl border border-borda bg-superficie p-6 transition-colors hover:border-marca"
       >
-        <p className="text-xs font-semibold uppercase tracking-widest text-marca">
+        <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-marca">
+          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-acento" />
           Curso
         </p>
         <h3 className="mt-3 text-xl font-semibold tracking-tight text-balance">

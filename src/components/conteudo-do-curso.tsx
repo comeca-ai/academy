@@ -86,7 +86,7 @@ export function ConteudoDoCurso({ curso, modulos }: Props) {
           {proxima ? (
             <Link
               href={`/cursos/${curso}/${proxima.slug}`}
-              className="mt-4 inline-block rounded-xl bg-marca-fundo px-5 py-2.5 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+              className="mt-4 inline-block rounded-xl bg-marca-fundo px-5 py-2.5 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               Continuar: {proxima.titulo} →
             </Link>
@@ -130,7 +130,7 @@ export function ConteudoDoCurso({ curso, modulos }: Props) {
                         </span>
                         <span className="font-medium">{aula.titulo}</span>
                         {aula.provisoria ? (
-                          <span className="rounded bg-superficie-alta px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-tinta-suave">
+                          <span className="rounded bg-acento px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-tinta">
                             título a definir
                           </span>
                         ) : null}

@@ -125,7 +125,7 @@ export default async function AulaPage({ params }: Props) {
           {proxima ? (
             <Link
               href={`/cursos/${curso.slug}/${proxima.slug}`}
-              className="rounded-xl bg-marca-fundo px-5 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+              className="rounded-xl bg-marca-fundo px-5 py-3 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               {proxima.titulo} →
             </Link>

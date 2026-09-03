@@ -121,7 +121,7 @@ export default async function PainelPage() {
                     {curso.proximaSlug && curso.proximaTitulo ? (
                       <Link
                         href={`/cursos/${curso.slug}/${curso.proximaSlug}`}
-                        className="mt-5 inline-block rounded-xl bg-marca-fundo px-5 py-2.5 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+                        className="mt-5 inline-block rounded-xl bg-marca-fundo px-5 py-2.5 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
                       >
                         Continuar: {curso.proximaTitulo} →
                       </Link>

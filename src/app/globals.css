@@ -5,50 +5,68 @@
  *
  * Camada 1 — primitivas: a paleta bruta, sem significado de uso.
  * Camada 2 — semânticas: os papéis que a interface consome. Componente nenhum
- * usa primitiva direto, então trocar a identidade é reescrever a camada 2.
+ * usa primitiva direto, então trocar a identidade é reescrever a camada 2 —
+ * foi exatamente o que aconteceu aqui: a Academy deixou de ser extensão
+ * visual do site do instrutor e passou a ter marca própria.
  *
- * A identidade é a mesma do site do instrutor: fundo quase preto levemente
- * azulado, azul royal como cor de marca, serifa de display e monoespaçada
- * para rótulos técnicos. A Academy é extensão daquela marca, não uma marca
- * nova.
+ * Identidade: fundo quase branco, azul começa.ai como cor de marca (funciona
+ * como texto direto — ao contrário do azul do tema anterior, este já nasce
+ * com contraste suficiente sobre fundo claro, sem precisar de uma versão
+ * clareada), amarelo como acento decorativo. Host Grotesk para tudo — corpo,
+ * título e a assinatura — e monoespaçada só para rótulo técnico.
  */
 @theme {
   --font-sans: var(--fonte-corpo), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--fonte-display), Georgia, serif;
+  --font-display: var(--fonte-display), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--fonte-mono), ui-monospace, SFMono-Regular, monospace;
   --font-marca: var(--fonte-marca), var(--fonte-corpo), sans-serif;
 
   /* Camada 1 — primitivas */
-  --color-carvao-950: #15171e;
-  --color-carvao-900: #1c1f28;
-  --color-carvao-800: #262a35;
-  --color-carvao-700: #363b49;
-  --color-areia-400: #8b8a82;
-  --color-areia-200: #c9c8bd;
-  --color-areia-50: #f2f1ea;
-  --color-royal-600: #2a3fbf;
-  --color-royal-500: #3d53d6;
-  --color-royal-300: #8b9bf0;
+  --color-tinta-950: #101014;
+  --color-tinta-700: #45454e;
+  --color-tinta-500: #63636d;
+  --color-tinta-300: #8a8a90;
+  --color-tinta-100: #dcdcde;
+  --color-tinta-050: #e8e8ea;
+  --color-branco: #ffffff;
+  --color-neve: #f2f2f2;
+  --color-azul-600: #1f1be4;
+  --color-azul-700: #1815b8;
+  --color-amarelo-400: #fae047;
 
   /* Camada 2 — semânticas */
-  --color-fundo: var(--color-carvao-950);
-  --color-superficie: var(--color-carvao-900);
-  --color-superficie-alta: var(--color-carvao-800);
-  --color-borda: var(--color-carvao-800);
-  --color-borda-forte: var(--color-carvao-700);
-  --color-tinta: var(--color-areia-50);
-  --color-tinta-media: var(--color-areia-200);
-  --color-tinta-suave: var(--color-areia-400);
-  /* Azul claro para TEXTO sobre fundo escuro: o royal cheio não alcança
-     contraste legível em corpo de texto. */
-  --color-marca: var(--color-royal-300);
-  /* Royal cheio para PREENCHIMENTO, sempre com texto claro por cima. */
-  --color-marca-fundo: var(--color-royal-600);
-  --color-marca-fundo-forte: var(--color-royal-500);
+  --color-fundo: var(--color-neve);
+  --color-superficie: var(--color-branco);
+  --color-superficie-alta: var(--color-tinta-050);
+  --color-borda: var(--color-tinta-100);
+  --color-borda-forte: var(--color-tinta-300);
+  --color-tinta: var(--color-tinta-950);
+  --color-tinta-media: var(--color-tinta-700);
+  --color-tinta-suave: var(--color-tinta-500);
+  --color-marca: var(--color-azul-600);
+  --color-marca-fundo: var(--color-azul-600);
+  --color-marca-fundo-forte: var(--color-azul-700);
+  /*
+   * Texto sobre `marca-fundo` — nunca `tinta`. As duas coincidiam no tema
+   * escuro (tinta já era clara, o preenchimento já era escuro o bastante) e
+   * essa coincidência escondia o acoplamento errado: o papel de `tinta` é
+   * contrastar com o FUNDO da página, não com o preenchimento de um botão.
+   * Aqui o fundo é claro e o preenchimento é escuro — tinta clara sobre
+   * preenchimento escuro exige a própria variável.
+   */
+  --color-marca-tinta: var(--color-branco);
+  /*
+   * O amarelo NUNCA é cor de texto nem contorno de foco: contra o fundo claro
+   * ele fica perto de 1.2:1 de contraste, bem abaixo do mínimo de acesso
+   * (medido, não estimado). Serve só como preenchimento decorativo — selo,
+   * destaque, seleção de texto — sempre com tinta escura por cima, nunca
+   * carregando informação sozinho.
+   */
+  --color-acento: var(--color-amarelo-400);
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -58,8 +76,10 @@ body {
 }
 
 /**
- * O halo azul do topo das seções, como no site do instrutor. Decorativo e sem
- * custo de imagem.
+ * O toque de cor no topo das seções. Era um brilho sobre fundo escuro; sobre
+ * fundo claro a mesma ideia vira um leve banho de cor, por isso a opacidade
+ * caiu de 42% para 10% — o valor antigo, incolor sobre branco, dominaria a
+ * seção inteira em vez de só assinalar o início dela.
  */
 .halo {
   position: relative;
@@ -73,13 +93,15 @@ body {
   z-index: -1;
   background: radial-gradient(
     110% 60% at 50% 0%,
-    color-mix(in oklab, var(--color-royal-600) 42%, transparent) 0%,
+    color-mix(in oklab, var(--color-azul-600) 10%, transparent) 0%,
     transparent 70%
   );
 }
 
 /* Requisito de acessibilidade, não enfeite: quem navega por teclado precisa
-   enxergar onde está. Nunca remover sem substituir por algo tão visível. */
+   enxergar onde está. Nunca remover sem substituir por algo tão visível.
+   Fica em azul, não no amarelo do acento — o amarelo não tem contraste
+   suficiente para servir de indicador. */
 :focus-visible {
   outline: 3px solid var(--color-marca);
   outline-offset: 3px;
@@ -87,7 +109,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-royal-500) 45%, transparent);
+  background: color-mix(in oklab, var(--color-acento) 55%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

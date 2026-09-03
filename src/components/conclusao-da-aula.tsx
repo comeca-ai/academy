@@ -74,7 +74,7 @@ export function ConclusaoDaAula({ curso, aula, destino }: Props) {
             disabled={salvando}
             className={
               concluida
-                ? 'rounded-xl bg-marca-fundo px-5 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte disabled:opacity-60'
+                ? 'rounded-xl bg-marca-fundo px-5 py-3 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte disabled:opacity-60'
                 : 'rounded-xl border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca disabled:opacity-60'
             }
           >

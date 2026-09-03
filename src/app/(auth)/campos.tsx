@@ -79,7 +79,7 @@ export function Enviar({ children, pendente }: { children: string; pendente: boo
     <button
       type="submit"
       disabled={pendente}
-      className="rounded-md bg-marca-fundo px-4 py-2.5 font-medium text-tinta hover:bg-marca-fundo-forte disabled:opacity-60"
+      className="rounded-md bg-marca-fundo px-4 py-2.5 font-medium text-marca-tinta hover:bg-marca-fundo-forte disabled:opacity-60"
     >
       {pendente ? 'Aguarde…' : children}
     </button>

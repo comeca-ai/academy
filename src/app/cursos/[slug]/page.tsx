@@ -62,7 +62,7 @@ export default async function CursoPage({ params }: Props) {
           {primeira ? (
             <Link
               href={`/cursos/${curso.slug}/${primeira.slug}`}
-              className="mt-7 inline-block rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+              className="mt-7 inline-block rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               Começar pela primeira aula
             </Link>

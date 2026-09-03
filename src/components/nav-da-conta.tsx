@@ -67,7 +67,7 @@ export function NavDaConta() {
       </Link>
       <Link
         href="/cadastro"
-        className="rounded-md bg-marca-fundo px-3.5 py-2 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+        className="rounded-md bg-marca-fundo px-3.5 py-2 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
       >
         Criar conta
       </Link>

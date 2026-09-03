@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#15171e',
+  themeColor: '#f2f2f2',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,19 +23,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* As fontes vêm por link, e não por next/font, para o build não
             depender de alcançar o Google em tempo de compilação. O preconnect
-            recupera boa parte da latência que o next/font economizaria. */}
+            recupera boa parte da latência que o next/font economizaria.
+            Host Grotesk faz corpo, título e assinatura — a marca não usa
+            serifa nem uma família à parte para o logotipo, como antes. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Michroma&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
         />
         <style>{`
           :root {
-            --fonte-display: 'Fraunces';
-            --fonte-corpo: 'IBM Plex Sans';
+            --fonte-display: 'Host Grotesk';
+            --fonte-corpo: 'Host Grotesk';
             --fonte-mono: 'JetBrains Mono';
-            --fonte-marca: 'Michroma';
+            --fonte-marca: 'Host Grotesk';
           }
         `}</style>
       </head>
@@ -44,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             navegação repetida em toda página. */}
         <a
           href="#conteudo"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-marca-fundo focus:px-4 focus:py-2 focus:text-tinta"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-marca-fundo focus:px-4 focus:py-2 focus:text-marca-tinta"
         >
           Pular para o conteúdo
         </a>

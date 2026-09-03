@@ -36,7 +36,7 @@ export default function Home() {
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/cursos/${destaque.slug}`}
-                  className="rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+                  className="rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-marca-tinta transition-colors hover:bg-marca-fundo-forte"
                 >
                   Começar agora
                 </Link>
