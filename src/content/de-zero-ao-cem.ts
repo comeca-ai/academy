@@ -6,8 +6,8 @@ import type { Curso } from './tipos'
  * Curso "De Zero ao Cem".
  *
  * Os resumos abaixo foram escritos a partir do propósito declarado em cada
- * deck de slides. As chaves de arquivo no R2 seguem o nome original dos PDFs
- * — se algum link abrir em erro, corrija a chave aqui.
+ * deck de slides. As chaves de arquivo são os nomes reais dos objetos no
+ * bucket `slidesaulas`, conferidos na listagem — inclusive o que tem espaços.
  */
 export const deZeroAoCem: Curso = {
   slug: 'de-zero-ao-cem',
@@ -35,7 +35,7 @@ export const deZeroAoCem: Curso = {
             {
               titulo: 'Slides da aula',
               tipo: 'slides',
-              url: arquivo('dados_conceitos_fundamentais_1.pdf'),
+              url: arquivo('dados_conceitos_fundamentais.pdf'),
             },
           ],
         },
@@ -47,7 +47,7 @@ export const deZeroAoCem: Curso = {
           video: VIDEOS['algoritmos'] ?? null,
           duracaoEmMinutos: 0,
           materiais: [
-            { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('Algoritmos_1.pdf') },
+            { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('Algoritmos.pdf') },
           ],
         },
       ],
@@ -63,7 +63,7 @@ export const deZeroAoCem: Curso = {
           video: VIDEOS['de-zero-ao-cem-flix'] ?? null,
           duracaoEmMinutos: 0,
           materiais: [
-            { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('De0ao100Flix_1.pdf') },
+            { titulo: 'Slides da aula', tipo: 'slides', url: arquivo('De0ao100Flix.pdf') },
           ],
         },
         {
@@ -77,7 +77,7 @@ export const deZeroAoCem: Curso = {
             {
               titulo: 'Precisamos falar sobre privacidade',
               tipo: 'pdf',
-              url: arquivo('Precisamos_falar_sobre_privacidade_2.pdf'),
+              url: arquivo('Precisamos falar sobre privacidade.pdf'),
             },
           ],
         },
@@ -97,7 +97,7 @@ export const deZeroAoCem: Curso = {
             {
               titulo: 'Biografia do instrutor',
               tipo: 'pdf',
-              url: arquivo('BiografiadoInstrutor_1.pdf'),
+              url: arquivo('BiografiadoInstrutor.pdf'),
             },
           ],
         },
