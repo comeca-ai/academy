@@ -58,7 +58,7 @@ Cada fatia entrega valor de ponta a ponta, em vez de camadas horizontais:
 
 1. **Fundação** — modelo de domínio, ambiente, senha e sessão. *(feito)*
 2. **Entrar e sair** — cadastro, login, sessão no banco, primeiro dono via
-   `OWNER_EMAIL`, proteção das rotas.
+   `OWNER_EMAIL`, proteção das rotas. *(feito)*
 3. **Catálogo lido** — listagem e página de curso públicas, a partir de dados
    semeados.
 4. **Autoria** — criar e editar curso, módulo e aula; rascunho e publicação.

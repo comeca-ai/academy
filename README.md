@@ -7,12 +7,15 @@ Plataforma de aprendizado da Começa.ai. Código proprietário.
 Fundação. O que já existe:
 
 - Modelo de domínio completo do núcleo (organização, pessoas, catálogo, matrícula, progresso) em `src/db/schema.ts`
-- Autenticação: hashing argon2id e sessões assinadas com revogação pelo banco
+- Autenticação de ponta a ponta: cadastro, login, logout, sessão revogável no
+  banco, proteção de rota e primeiro dono via `OWNER_EMAIL`
+- Defesas de login: limite de tentativas, resposta de tempo constante e
+  bloqueio de redirecionamento aberto — todas com teste
 - Configuração validada de ambiente, com falha explícita no ponto de uso
 - Esqueleto Next.js com acessibilidade na base
 
-O que ainda não existe: telas de autenticação, área do aluno, autoria de curso,
-player de vídeo, matrícula. A sequência está em `docs/adr/0001-stack.md`.
+O que ainda não existe: catálogo de cursos, autoria, player de vídeo,
+matrícula e progresso. A sequência está em `docs/adr/0001-stack.md`.
 
 ## Stack
 
