@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import type { Curso } from '@/content/tipos'
+import { plural } from '@/lib/formato'
 
 export function CartaoDeCurso({ curso }: { curso: Curso }) {
   const totalDeAulas = curso.modulos.reduce((soma, m) => soma + m.aulas.length, 0)
@@ -17,10 +18,11 @@ export function CartaoDeCurso({ curso }: { curso: Curso }) {
         <h3 className="mt-3 text-xl font-semibold tracking-tight text-balance">
           {curso.titulo}
         </h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-tinta-suave">{curso.resumo}</p>
+        <p className="mt-2.5 text-sm leading-relaxed text-tinta-media">{curso.resumo}</p>
 
         <p className="mt-5 border-t border-borda pt-4 text-sm text-tinta-suave">
-          {curso.modulos.length} módulos · {totalDeAulas} aulas
+          {plural(curso.modulos.length, 'módulo', 'módulos')} ·{' '}
+          {plural(totalDeAulas, 'aula', 'aulas')}
         </p>
         <span
           aria-hidden="true"

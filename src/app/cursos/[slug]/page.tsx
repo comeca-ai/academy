@@ -57,7 +57,7 @@ export default async function CursoPage({ params }: Props) {
           {primeira ? (
             <Link
               href={`/cursos/${curso.slug}/${primeira.slug}`}
-              className="mt-7 inline-block rounded-md bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+              className="mt-7 inline-block rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               Começar pela primeira aula
             </Link>
@@ -100,7 +100,7 @@ export default async function CursoPage({ params }: Props) {
                               </span>
                               <span className="font-medium">{aula.titulo}</span>
                               {aula.provisoria ? (
-                                <span className="rounded border border-borda-forte px-1.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-tinta-suave">
+                                <span className="rounded bg-superficie-alta px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-tinta-suave">
                                   título a definir
                                 </span>
                               ) : null}

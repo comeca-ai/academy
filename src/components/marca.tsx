@@ -21,7 +21,7 @@ export function Simbolo({ className }: { className?: string }) {
       className={className}
     >
       {/* As seis hastes do brasão, três por lado */}
-      <g stroke="currentColor" strokeWidth="2.2">
+      <g stroke="currentColor" strokeWidth="3">
         <path d="M13 13 C 17 31, 25 47, 30.5 68" />
         <path d="M19 13 C 22 29, 28 44, 31.5 61" />
         <path d="M25 13 C 27 27, 30.5 40, 32 53" />
@@ -80,7 +80,7 @@ export function Marca({ empilhada = false }: { empilhada?: boolean }) {
       <Simbolo className="h-9 w-auto shrink-0" />
       <span className="flex flex-col leading-none">
         <span className="font-marca text-[15px] tracking-[0.2em]">EMERICK</span>
-        <span className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-tinta-suave">
+        <span className="mt-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.22em] text-tinta-media">
           Academy
         </span>
       </span>

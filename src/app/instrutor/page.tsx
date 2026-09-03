@@ -75,7 +75,7 @@ export default function InstrutorPage() {
 
         <Link
           href="/cursos"
-          className="mt-12 inline-block rounded-md bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+          className="mt-12 inline-block rounded-xl bg-marca-fundo px-6 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
         >
           Ver os cursos
         </Link>

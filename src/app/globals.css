@@ -73,8 +73,8 @@ body {
   z-index: -1;
   background: radial-gradient(
     110% 60% at 50% 0%,
-    color-mix(in oklab, var(--color-royal-600) 30%, transparent) 0%,
-    transparent 62%
+    color-mix(in oklab, var(--color-royal-600) 42%, transparent) 0%,
+    transparent 70%
   );
 }
 

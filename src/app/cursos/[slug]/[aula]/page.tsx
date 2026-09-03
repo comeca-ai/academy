@@ -103,7 +103,7 @@ export default async function AulaPage({ params }: Props) {
           {anterior ? (
             <Link
               href={`/cursos/${curso.slug}/${anterior.slug}`}
-              className="rounded-md border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
+              className="rounded-xl border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
             >
               ← {anterior.titulo}
             </Link>
@@ -114,14 +114,14 @@ export default async function AulaPage({ params }: Props) {
           {proxima ? (
             <Link
               href={`/cursos/${curso.slug}/${proxima.slug}`}
-              className="rounded-md bg-marca-fundo px-5 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
+              className="rounded-xl bg-marca-fundo px-5 py-3 font-semibold text-tinta transition-colors hover:bg-marca-fundo-forte"
             >
               {proxima.titulo} →
             </Link>
           ) : (
             <Link
               href={`/cursos/${curso.slug}`}
-              className="rounded-md border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
+              className="rounded-xl border border-borda-forte px-5 py-3 font-medium text-tinta-media transition-colors hover:border-marca hover:text-marca"
             >
               Voltar ao curso
             </Link>
