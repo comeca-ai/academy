@@ -126,9 +126,16 @@ export default async function CursoPage({ params }: Props) {
                 Quem ensina
               </h2>
               <p className="mt-3 font-semibold">{curso.instrutor.nome}</p>
-              <p className="mt-2.5 text-sm leading-relaxed text-tinta-suave">
-                {curso.instrutor.bio}
+              <p className="mt-1 text-sm text-marca">{curso.instrutor.titulo}</p>
+              <p className="mt-3 text-sm leading-relaxed text-tinta-suave">
+                {curso.instrutor.resumo}
               </p>
+              <Link
+                href="/instrutor"
+                className="mt-4 inline-block text-sm font-semibold text-tinta-media transition-colors hover:text-marca"
+              >
+                Trajetória completa →
+              </Link>
             </div>
           </aside>
         </div>

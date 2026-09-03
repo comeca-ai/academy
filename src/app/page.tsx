@@ -80,9 +80,16 @@ export default function Home() {
               <p className="mt-4 text-2xl font-semibold tracking-tight">
                 {destaque.instrutor.nome}
               </p>
-              <p className="mt-3 leading-relaxed text-tinta-media text-pretty">
-                {destaque.instrutor.bio}
+              <p className="mt-1 text-marca">{destaque.instrutor.titulo}</p>
+              <p className="mt-4 leading-relaxed text-tinta-media text-pretty">
+                {destaque.instrutor.resumo}
               </p>
+              <Link
+                href="/instrutor"
+                className="mt-5 inline-block font-semibold text-tinta-media transition-colors hover:text-marca"
+              >
+                Trajetória completa →
+              </Link>
             </div>
           </section>
         ) : null}

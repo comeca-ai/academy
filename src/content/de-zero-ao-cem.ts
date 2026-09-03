@@ -48,7 +48,21 @@ export const deZeroAoCem: Curso = {
     'Um curso de entrada em inteligência artificial, sem pré-requisito técnico.\n\nA sequência parte do material bruto — os dados — passa pelos algoritmos que aprendem com eles e chega às sessões práticas, onde cada conceito reaparece em uso real.',
   instrutor: {
     nome: 'Jhonata Emerick',
-    bio: 'Cofundador da Datarisk. Engenheiro aeronáutico pela Escola de Engenharia de São Carlos (USP) e mestre em Finanças Quantitativas pela FGV. Trabalha com inovação, big data, internet das coisas e startups.',
+    titulo: 'Cofundador e CEO da Datarisk',
+    resumo:
+      'Constrói inteligência artificial aplicada no Brasil há mais de uma década — mais de 500 soluções entregues na América Latina. Preside a associação que organiza o setor no país e leciona a partir do que implantou, não do que leu.',
+    credenciais: [
+      'Cofundador e CEO da Datarisk, referência em soluções de inteligência artificial no Brasil, com mais de 500 soluções desenvolvidas e implantadas na América Latina.',
+      'Cofundador e presidente da Associação Brasileira de Inteligência Artificial (ABRIA), à frente de iniciativas estratégicas para IA no país.',
+      'Doutor em Engenharia da Computação pela Poli-USP, com tese voltada para automação em saúde.',
+      'Mestre em Finanças Quantitativas pela FGV.',
+      'Graduado em Engenharia Aeronáutica pela EESC-USP, em São Carlos.',
+      'Cofundador do Rapiddo, startup de logística urbana vendida para o iFood em 2018.',
+      'Cofundador da RadSquare, de aplicações médicas com inteligência artificial — spinoff do Hospital Israelita Albert Einstein, que é investidor.',
+      'Autor de "Econometria com EViews — Guia Essencial de Conceitos e Aplicações".',
+    ],
+    handle: 'jhonataemck',
+    site: 'https://www.jhonataemerick.com.br/',
   },
   modulos: [{ titulo: 'Aulas', aulas }],
   materiais: MATERIAIS_DO_CURSO.map((material) => ({

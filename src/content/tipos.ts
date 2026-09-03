@@ -51,12 +51,32 @@ export type Modulo = {
   aulas: Aula[]
 }
 
+/**
+ * Quem conduz o curso.
+ *
+ * As credenciais ficam em lista, e não em parágrafo corrido, porque é assim
+ * que elas são lidas: em varredura. A interface mostra as primeiras onde o
+ * espaço é curto e todas na página do instrutor.
+ */
+export type Instrutor = {
+  nome: string
+  /** Cargo principal, uma linha. */
+  titulo: string
+  /** Duas ou três frases, para caber numa barra lateral. */
+  resumo: string
+  /** Trajetória completa, um item por realização. */
+  credenciais: string[]
+  /** Perfil público, sem o arroba. */
+  handle?: string
+  site?: string
+}
+
 export type Curso = {
   slug: string
   titulo: string
   resumo: string
   descricao: string
-  instrutor: { nome: string; bio: string }
+  instrutor: Instrutor
   modulos: Modulo[]
   /** Material que vale para o curso todo, não para uma aula específica. */
   materiais: Material[]
