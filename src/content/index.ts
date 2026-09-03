@@ -83,13 +83,3 @@ export function buscarAula(cursoSlug: string, aulaSlug: string): AulaEmContexto 
   }
 }
 
-/** Todos os pares curso/aula, para o Next gerar as páginas no build. */
-export function todosOsCaminhos(): { slug: string; aula: string }[] {
-  return CURSOS.flatMap((curso) =>
-    todasAsAulas(curso).map((aula) => ({ slug: curso.slug, aula: aula.slug })),
-  )
-}
-
-export function todosOsCursos(): { slug: string }[] {
-  return CURSOS.map((curso) => ({ slug: curso.slug }))
-}

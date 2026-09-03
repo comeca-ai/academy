@@ -7,11 +7,14 @@ Plataforma de aprendizado da Começa.ai. Código proprietário.
 O que já existe:
 
 - Catálogo, aulas, player de vídeo e materiais, com o conteúdo versionado em
-  `src/content` e as páginas saindo prontas do build
+  `src/content`
 - Autenticação de ponta a ponta: cadastro, login, logout, sessão revogável no
   banco, proteção de rota e primeiro dono via `OWNER_EMAIL`
 - Defesas de login: limite de tentativas, resposta de tempo constante e
   bloqueio de redirecionamento aberto — todas com teste
+- Curso fechado para quem não tem conta: abrir um curso ou uma aula exige
+  sessão válida, checada no servidor a cada requisição. O catálogo (`/cursos`),
+  a home e a página do instrutor continuam públicos — são vitrine, não conteúdo
 - Matrícula e progresso: marcar aula concluída, barra de progresso, retomar de
   onde parou e um painel com os cursos em andamento
 - Configuração validada de ambiente, com falha explícita no ponto de uso
@@ -20,23 +23,38 @@ O que já existe:
 O que ainda não existe: autoria pelo painel, certificado, avaliações e
 relatórios de turma. A sequência está em `docs/adr/0001-stack.md`.
 
+### Por que curso e aula não saem mais prontos do build
+
+Até a matrícula existir, `/cursos/[slug]` e `/cursos/[slug]/[aula]` eram
+estáticas — o conteúdo é código, então o HTML saía pronto do build, igual
+para todo mundo. Fechar o curso para quem não tem conta exige o oposto: uma
+checagem de sessão no servidor, a cada requisição, antes de decidir se a
+página renderiza ou redireciona para `/entrar`. As duas rotas têm
+`dynamic = 'force-dynamic'` por isso — não é acidente nem esquecimento.
+
+O catálogo, a home e o instrutor não passam por essa checagem — não têm nada
+que dependa de quem está olhando — e continuam estáticas. Foi medido, não
+assumido: veja o `prerender-manifest.json` depois do build; a tabela de rotas
+do Next marca `●`/`○` sem provar nada, porque já marcou estático uma página
+que não emitia HTML nenhum.
+
 ### Por que o progresso é buscado pelo navegador
 
-As páginas do catálogo são estáticas — é o ponto de guardar o conteúdo em
-código. Qualquer leitura de cookie no servidor dentro dessas páginas derruba o
-pré-render inteiro, inclusive quando está escondida num componente comum como
-o cabeçalho. Medido: com uma leitura de sessão no cabeçalho, o build emitia
-1 rota estática; sem ela, 13.
+O cabeçalho aparece em toda página, inclusive nas que continuam estáticas. Uma
+leitura de cookie ali bastaria para tirá-las do pré-render também — foi o que
+aconteceu antes de existir `/api/sessao`. Medido: com a sessão lida no
+cabeçalho, o build emitia 1 rota estática; sem ela, 13.
 
-Por isso o que varia por pessoa — o menu da conta e o progresso — é buscado
-depois da hidratação, em `/api/sessao` e `/api/progresso/[curso]`. As duas
-respostas são `private, no-store`: o conteúdo é de uma pessoa só e as rotas
-ficam atrás de CDN.
+Por isso o que varia por pessoa nas páginas públicas — o menu da conta e o
+progresso — é buscado depois da hidratação, em `/api/sessao` e
+`/api/progresso/[curso]`. As duas respostas são `private, no-store`: o
+conteúdo é de uma pessoa só e as rotas ficam atrás de CDN.
 
-Ao mexer em `src/components/cabecalho.tsx` ou em qualquer componente presente
-nas páginas de curso, confira o `prerender-manifest.json` depois do build. A
-tabela de rotas do Next marca `●` mesmo quando não emitiu HTML nenhum, então
-ela não serve de prova.
+Ao mexer em `src/components/cabecalho.tsx`, confira o `prerender-manifest.json`
+depois do build — não a tabela de rotas do `next build`, que já marcou
+estático o que não tinha emitido HTML nenhum. `/`, `/cursos` e `/instrutor`
+são o que pode voltar a quebrar; curso e aula já são dinâmicas por conta
+própria, então uma leitura de cookie a mais ali não muda o resultado.
 
 ## Stack
 

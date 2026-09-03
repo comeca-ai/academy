@@ -6,15 +6,17 @@ import { Cabecalho } from '@/components/cabecalho'
 import { ConclusaoDaAula } from '@/components/conclusao-da-aula'
 import { MateriaisDaAula } from '@/components/materiais-da-aula'
 import { PlayerDeVideo } from '@/components/player-de-video'
-import { buscarAula, todosOsCaminhos } from '@/content'
+import { buscarAula } from '@/content'
+import { exigirUsuario } from '@/lib/auth/current-user'
 import { duracaoHumana } from '@/lib/formato'
 
 type Props = { params: Promise<{ slug: string; aula: string }> }
 
-/** Todas as aulas são conhecidas no build e saem como páginas prontas. */
-export function generateStaticParams() {
-  return todosOsCaminhos()
-}
+/**
+ * Dinâmica de propósito: assistir a aula exige conta, e essa checagem roda
+ * por requisição — o mesmo motivo que tira a página do curso do pré-render.
+ */
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, aula } = await params
@@ -30,6 +32,8 @@ export default async function AulaPage({ params }: Props) {
   const { slug, aula: aulaSlug } = await params
   const dados = buscarAula(slug, aulaSlug)
   if (!dados) notFound()
+
+  await exigirUsuario(`/cursos/${slug}/${aulaSlug}`)
 
   const { curso, modulo, aula, indice, total, anterior, proxima } = dados
 

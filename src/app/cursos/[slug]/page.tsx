@@ -4,15 +4,18 @@ import { notFound } from 'next/navigation'
 
 import { Cabecalho } from '@/components/cabecalho'
 import { ConteudoDoCurso } from '@/components/conteudo-do-curso'
-import { buscarCurso, todosOsCursos } from '@/content'
+import { buscarCurso } from '@/content'
+import { exigirUsuario } from '@/lib/auth/current-user'
 import { duracaoHumana, plural } from '@/lib/formato'
 
 type Props = { params: Promise<{ slug: string }> }
 
-/** O catálogo é conhecido no build, então todas as páginas de curso saem prontas. */
-export function generateStaticParams() {
-  return todosOsCursos()
-}
+/**
+ * Dinâmica de propósito: abrir um curso exige conta, e essa checagem roda por
+ * requisição. O catálogo em /cursos continua estático — só o curso em si é
+ * benefício de quem está logado.
+ */
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const dados = buscarCurso((await params).slug)
@@ -21,8 +24,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CursoPage({ params }: Props) {
-  const dados = buscarCurso((await params).slug)
+  const { slug } = await params
+  const dados = buscarCurso(slug)
   if (!dados) notFound()
+
+  await exigirUsuario(`/cursos/${slug}`)
 
   const { curso, totalDeAulas, duracaoEmMinutos } = dados
   const primeira = curso.modulos[0]?.aulas[0]
