@@ -19,9 +19,9 @@ export type Material = {
 /**
  * Uma parte gravada da aula.
  *
- * As gravações do curso são divididas em partes numeradas ("[Parte 5]"), então
- * uma aula tem uma lista, não um vídeo só. Com uma única parte, a interface
- * não mostra rótulo nenhum — a divisão só aparece quando existe de fato.
+ * As gravações do curso são divididas em partes numeradas, então uma aula tem
+ * uma lista, não um vídeo só. Com uma única parte, a interface não mostra
+ * rótulo nenhum — a divisão só aparece quando existe de fato.
  */
 export type Parte = {
   /** Identificador de 32 caracteres no Cloudflare Stream. */
@@ -33,12 +33,17 @@ export type Parte = {
 export type Aula = {
   slug: string
   titulo: string
-  /** Uma ou duas frases sobre o que a aula entrega. */
+  /** Uma ou duas frases sobre o que a aula entrega. Vazio enquanto não definido. */
   resumo: string
   /** Gravações da aula, em ordem. Lista vazia enquanto não houver vídeo. */
   partes: Parte[]
   duracaoEmMinutos: number
   materiais: Material[]
+  /**
+   * Marca aula cujo título ainda não foi confirmado por quem produziu o curso.
+   * A interface sinaliza, para ninguém confundir rascunho com versão final.
+   */
+  provisoria?: boolean
 }
 
 export type Modulo = {
@@ -53,4 +58,6 @@ export type Curso = {
   descricao: string
   instrutor: { nome: string; bio: string }
   modulos: Modulo[]
+  /** Material que vale para o curso todo, não para uma aula específica. */
+  materiais: Material[]
 }

@@ -74,13 +74,25 @@ export default async function AulaPage({ params }: Props) {
           />
         </div>
 
+        {aula.provisoria ? (
+          <p
+            role="status"
+            className="mt-6 rounded-lg border border-borda-forte bg-superficie px-4 py-3 text-sm text-tinta-suave"
+          >
+            O vídeo desta aula já está no ar. O título e a descrição ainda
+            aguardam confirmação de quem produziu o curso.
+          </p>
+        ) : null}
+
         <div className="mt-9">
           <PlayerDeVideo partes={aula.partes} titulo={aula.titulo} />
         </div>
 
-        <p className="mt-9 text-lg leading-relaxed text-tinta-media text-pretty">
-          {aula.resumo}
-        </p>
+        {aula.resumo ? (
+          <p className="mt-9 text-lg leading-relaxed text-tinta-media text-pretty">
+            {aula.resumo}
+          </p>
+        ) : null}
 
         <MateriaisDaAula materiais={aula.materiais} />
 

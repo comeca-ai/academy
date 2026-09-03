@@ -99,6 +99,11 @@ export default async function CursoPage({ params }: Props) {
                                 {String(contador).padStart(2, '0')}
                               </span>
                               <span className="font-medium">{aula.titulo}</span>
+                              {aula.provisoria ? (
+                                <span className="rounded border border-borda-forte px-1.5 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-tinta-suave">
+                                  título a definir
+                                </span>
+                              ) : null}
                             </span>
                             {aula.duracaoEmMinutos > 0 ? (
                               <span className="shrink-0 text-sm text-tinta-suave">
@@ -127,6 +132,34 @@ export default async function CursoPage({ params }: Props) {
             </div>
           </aside>
         </div>
+
+        {curso.materiais.length > 0 ? (
+          <section aria-labelledby="material-do-curso" className="mt-16 max-w-2xl">
+            <h2
+              id="material-do-curso"
+              className="text-xs font-semibold uppercase tracking-widest text-tinta-suave"
+            >
+              Material do curso
+            </h2>
+            <ul className="mt-4 flex list-none flex-col gap-2.5">
+              {curso.materiais.map((material) => (
+                <li key={material.url}>
+                  <a
+                    href={material.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between gap-4 rounded-xl border border-borda bg-superficie px-5 py-4 transition-colors hover:border-marca"
+                  >
+                    <span className="font-medium">{material.titulo}</span>
+                    <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-marca">
+                      abrir ↗
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section aria-labelledby="sobre" className="mt-16 max-w-2xl">
           <h2
