@@ -38,7 +38,10 @@ export function arquivo(chave: string): string {
  * acessíveis.
  */
 export const VIDEOS: Record<string, string | null> = {
-  'dados-conceitos-fundamentais': null,
+  // PROVISÓRIO: identificador de exemplo, ainda sem confirmação de qual aula
+  // ele é. Está aqui para validar o player de ponta a ponta — confirme ou
+  // troque antes de mostrar o curso a alguém.
+  'dados-conceitos-fundamentais': '88496712714cef55dd2eb4a590bc3618',
   algoritmos: null,
   'de-zero-ao-cem-flix': null,
   'quem-e-o-instrutor': null,
