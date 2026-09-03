@@ -16,10 +16,13 @@ const schema = z.object({
   APP_SECRET: z.string().min(32, 'APP_SECRET precisa de ao menos 32 caracteres').optional(),
   APP_URL: z.string().url().default('http://localhost:3000'),
   OWNER_EMAIL: z.string().email().optional(),
-  // Envio de e-mail transacional (recuperação de senha). As duas andam juntas:
-  // a chave sem remetente verificado não envia nada, e vice-versa.
-  RESEND_API_KEY: z.string().optional(),
-  EMAIL_REMETENTE: z.string().optional(),
+  // Envio de e-mail transacional (recuperação de senha) via Cloudflare Email
+  // Service. O token é o único segredo a configurar; a conta e o remetente são
+  // fixos para esta instalação e por isso têm padrão, mas dá para sobrescrever
+  // pelo ambiente se um dia mudarem.
+  CLOUDFLARE_EMAIL_TOKEN: z.string().optional(),
+  CLOUDFLARE_ACCOUNT_ID: z.string().default('749b2e9b3642e4b03321d5830e81c195'),
+  EMAIL_REMETENTE: z.string().default('noreply@comeca.ai'),
 })
 
 const parsed = schema.safeParse(process.env)
@@ -66,11 +69,8 @@ export function requireAppSecret(): string {
 /**
  * Se há como enviar e-mail transacional.
  *
- * As duas variáveis são exigidas juntas pelo mesmo motivo de
- * `DATABASE_URL`/`APP_SECRET`: metade da configuração não funciona, e falhar
- * cedo evita descobrir isso só quando alguém pedir para redefinir a senha.
- * Sem isto configurado, o link de redefinição vai para o console do servidor
- * em vez do e-mail da pessoa — dá para testar o fluxo, mas não usar de
- * verdade.
+ * Basta o token: a conta e o remetente têm padrão. Sem o token, o link de
+ * redefinição vai para o console do servidor em vez do e-mail da pessoa — dá
+ * para testar o fluxo, mas não usar de verdade.
  */
-export const emailConfigurado = Boolean(env.RESEND_API_KEY && env.EMAIL_REMETENTE)
+export const emailConfigurado = Boolean(env.CLOUDFLARE_EMAIL_TOKEN)
