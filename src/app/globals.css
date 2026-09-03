@@ -1,26 +1,52 @@
 @import 'tailwindcss';
 
 /**
- * Tokens da Academy.
+ * Sistema visual da Academy, em duas camadas.
  *
- * Tamanho base de 17px em vez dos 16px do padrão: o conteúdo aqui é lido por
- * períodos longos, e o ganho de legibilidade compensa o espaço. Todo o resto
- * da escala é relativo, então mudar esta linha reescala a interface inteira.
+ * Camada 1 — primitivas: a paleta bruta, sem significado de uso.
+ * Camada 2 — semânticas: os papéis que a interface consome (fundo, tinta,
+ * superfície, borda, marca). Componente nenhum usa primitiva direto.
+ *
+ * A separação existe para que trocar a identidade seja reescrever a camada 2,
+ * sem tocar em componente. Se um dia a plataforma precisar de tema por
+ * organização, é aqui que ele entra — e só aqui.
+ *
+ * A identidade: papel quente, tinta quase preta, um azul sóbrio como marca.
+ * Editorial e de alto contraste, porque o produto é leitura longa.
  */
 @theme {
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
 
-  --color-tinta: oklch(0.22 0.02 260);
-  --color-tinta-suave: oklch(0.48 0.02 260);
-  --color-papel: oklch(0.99 0.003 260);
-  --color-papel-fundo: oklch(0.97 0.005 260);
-  --color-borda: oklch(0.9 0.008 260);
-  --color-marca: oklch(0.55 0.17 258);
-  --color-marca-forte: oklch(0.45 0.18 258);
+  /* Camada 1 — primitivas */
+  --color-areia-50: oklch(0.99 0.004 85);
+  --color-areia-100: oklch(0.97 0.006 85);
+  --color-areia-200: oklch(0.92 0.008 85);
+  --color-grafite-400: oklch(0.58 0.012 260);
+  --color-grafite-700: oklch(0.35 0.015 260);
+  --color-grafite-900: oklch(0.2 0.018 260);
+  --color-azul-500: oklch(0.55 0.16 250);
+  --color-azul-600: oklch(0.47 0.17 250);
+  --color-verde-600: oklch(0.55 0.13 155);
+
+  /* Camada 2 — semânticas */
+  --color-papel: var(--color-areia-50);
+  --color-papel-fundo: var(--color-areia-100);
+  --color-borda: var(--color-areia-200);
+  --color-tinta: var(--color-grafite-900);
+  --color-tinta-media: var(--color-grafite-700);
+  --color-tinta-suave: var(--color-grafite-400);
+  --color-marca: var(--color-azul-500);
+  --color-marca-forte: var(--color-azul-600);
+  --color-sucesso: var(--color-verde-600);
 }
 
+/**
+ * Base de 17px em vez dos 16px do padrão. O conteúdo aqui é lido por períodos
+ * longos e o ganho de legibilidade compensa o espaço. Toda a escala é
+ * relativa, então esta linha reescala a interface inteira.
+ */
 :root {
   font-size: 17px;
   color-scheme: light;
@@ -32,8 +58,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* O anel de foco é requisito de acessibilidade, não enfeite: quem navega por
-   teclado precisa enxergar onde está. Nunca remover sem substituir. */
+/* Requisito de acessibilidade, não enfeite: quem navega por teclado precisa
+   enxergar onde está. Nunca remover sem substituir por algo tão visível. */
 :focus-visible {
   outline: 3px solid var(--color-marca);
   outline-offset: 2px;
