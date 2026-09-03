@@ -1,6 +1,6 @@
-import type { LessonMaterial } from '@/db/schema'
+import type { Material } from '@/content/tipos'
 
-const ROTULO: Record<LessonMaterial['kind'], string> = {
+const ROTULO: Record<Material['tipo'], string> = {
   slides: 'Slides',
   pdf: 'PDF',
   link: 'Link',
@@ -14,7 +14,7 @@ const ROTULO: Record<LessonMaterial['kind'], string> = {
  * ela perder o ponto onde estava no vídeo. O `rel` acompanha o `target` por
  * segurança: sem ele a página aberta ganha referência à nossa.
  */
-export function MateriaisDaAula({ materiais }: { materiais: LessonMaterial[] }) {
+export function MateriaisDaAula({ materiais }: { materiais: Material[] }) {
   if (materiais.length === 0) return null
 
   return (
@@ -24,16 +24,16 @@ export function MateriaisDaAula({ materiais }: { materiais: LessonMaterial[] }) 
       </h2>
       <ul className="mt-3 flex list-none flex-col gap-2">
         {materiais.map((material) => (
-          <li key={material.id}>
+          <li key={material.url}>
             <a
               href={material.url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between gap-4 rounded-md border border-borda bg-papel-fundo px-4 py-3 hover:border-marca"
             >
-              <span className="font-medium">{material.title}</span>
+              <span className="font-medium">{material.titulo}</span>
               <span className="shrink-0 text-sm text-tinta-suave">
-                {ROTULO[material.kind]} ↗
+                {ROTULO[material.tipo]} ↗
               </span>
             </a>
           </li>

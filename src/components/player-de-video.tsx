@@ -3,17 +3,17 @@ import { resolverVideo } from '@/lib/video'
 /**
  * Player da aula, com proporção 16:9 preservada em qualquer largura.
  *
- * Devolve `null` quando a aula não tem vídeo — aula de texto é caso normal,
- * não erro, e não deve reservar espaço vazio na página.
+ * Devolve `null` quando a aula ainda não tem vídeo — aula só de material é
+ * caso normal, não erro, e não deve reservar um retângulo preto vazio.
  */
 export function PlayerDeVideo({
-  videoUrl,
+  video: origem,
   titulo,
 }: {
-  videoUrl: string | null | undefined
+  video: string | null | undefined
   titulo: string
 }) {
-  const video = resolverVideo(videoUrl)
+  const video = resolverVideo(origem)
   if (!video) return null
 
   return (
@@ -24,8 +24,6 @@ export function PlayerDeVideo({
           controls
           preload="metadata"
           className="h-full w-full"
-          // Sem legenda cadastrada ainda; o atributo declara a ausência em vez
-          // de deixar o leitor de tela sem informação nenhuma.
           aria-label={`Vídeo da aula: ${titulo}`}
         />
       ) : (

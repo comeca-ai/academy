@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 
-import { AvisoSemBanco } from '@/components/aviso-sem-banco'
 import { Cabecalho } from '@/components/cabecalho'
 import { CartaoDeCurso } from '@/components/cartao-de-curso'
-import { listarCursosPublicados } from '@/db/queries/courses'
-import { bancoConfigurado } from '@/lib/env'
+import { listarCursos } from '@/content'
 
 export const metadata: Metadata = {
   title: 'Cursos',
-  description: 'Todos os cursos publicados na Começa.ai Academy.',
+  description: 'Todos os cursos da Começa.ai Academy.',
 }
 
 export default async function CursosPage({
@@ -17,7 +15,7 @@ export default async function CursosPage({
   searchParams: Promise<{ busca?: string }>
 }) {
   const busca = (await searchParams).busca?.trim() ?? ''
-  const cursos = bancoConfigurado ? await listarCursosPublicados(busca) : []
+  const cursos = listarCursos(busca)
 
   return (
     <>
@@ -51,20 +49,14 @@ export default async function CursosPage({
           </button>
         </form>
 
-        {!bancoConfigurado ? (
-          <div className="mt-10">
-            <AvisoSemBanco />
-          </div>
-        ) : cursos.length === 0 ? (
+        {cursos.length === 0 ? (
           <p className="mt-10 rounded-lg border border-borda bg-papel-fundo p-6 text-tinta-media">
-            {busca
-              ? `Nenhum curso encontrado para “${busca}”.`
-              : 'Nenhum curso publicado ainda.'}
+            Nenhum curso encontrado para “{busca}”.
           </p>
         ) : (
           <ul className="mt-10 grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {cursos.map((curso) => (
-              <CartaoDeCurso key={curso.id} curso={curso} />
+              <CartaoDeCurso key={curso.slug} curso={curso} />
             ))}
           </ul>
         )}

@@ -3,33 +3,27 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { Cabecalho } from '@/components/cabecalho'
-import { buscarCursoPublicado } from '@/db/queries/courses'
-import { usuarioAtual } from '@/lib/auth/current-user'
-import { bancoConfigurado } from '@/lib/env'
+import { buscarCurso, todosOsCursos } from '@/content'
 import { duracaoHumana, plural } from '@/lib/formato'
 
 type Props = { params: Promise<{ slug: string }> }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const curso = bancoConfigurado
-    ? await buscarCursoPublicado((await params).slug)
-    : null
-  if (!curso) return { title: 'Curso não encontrado' }
+/** O catálogo é conhecido no build, então todas as páginas de curso saem prontas. */
+export function generateStaticParams() {
+  return todosOsCursos()
+}
 
-  return {
-    title: curso.course.title,
-    description: curso.course.summary || undefined,
-  }
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const dados = buscarCurso((await params).slug)
+  if (!dados) return { title: 'Curso não encontrado' }
+  return { title: dados.curso.titulo, description: dados.curso.resumo }
 }
 
 export default async function CursoPage({ params }: Props) {
-  const curso = bancoConfigurado
-    ? await buscarCursoPublicado((await params).slug)
-    : null
-  if (!curso) notFound()
+  const dados = buscarCurso((await params).slug)
+  if (!dados) notFound()
 
-  const { course, modules, totalDeAulas, duracaoEmSegundos } = curso
-  const usuario = await usuarioAtual()
+  const { curso, totalDeAulas, duracaoEmMinutos } = dados
 
   return (
     <>
@@ -40,18 +34,16 @@ export default async function CursoPage({ params }: Props) {
         </Link>
 
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-balance">
-          {course.title}
+          {curso.titulo}
         </h1>
-        {course.summary ? (
-          <p className="mt-3 max-w-2xl text-lg text-tinta-media text-pretty">
-            {course.summary}
-          </p>
-        ) : null}
+        <p className="mt-3 max-w-2xl text-lg text-tinta-media text-pretty">
+          {curso.resumo}
+        </p>
 
         <p className="mt-4 text-sm text-tinta-suave">
-          {plural(modules.length, 'módulo', 'módulos')} ·{' '}
+          {plural(curso.modulos.length, 'módulo', 'módulos')} ·{' '}
           {plural(totalDeAulas, 'aula', 'aulas')}
-          {duracaoEmSegundos > 0 ? ` · ${duracaoHumana(duracaoEmSegundos)}` : ''}
+          {duracaoEmMinutos > 0 ? ` · ${duracaoHumana(duracaoEmMinutos * 60)}` : ''}
         </p>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_260px]">
@@ -60,78 +52,55 @@ export default async function CursoPage({ params }: Props) {
               Conteúdo do curso
             </h2>
 
-            {modules.length === 0 ? (
-              <p className="mt-4 text-tinta-media">
-                O conteúdo deste curso ainda está sendo preparado.
-              </p>
-            ) : (
-              <ol className="mt-4 flex list-none flex-col gap-4">
-                {modules.map((modulo, indice) => (
-                  <li
-                    key={modulo.module.id}
-                    className="rounded-lg border border-borda bg-papel-fundo p-5"
-                  >
-                    <h3 className="font-semibold">
-                      <span className="text-tinta-suave">{indice + 1}.</span>{' '}
-                      {modulo.module.title}
-                    </h3>
-                    {modulo.lessons.length === 0 ? (
-                      <p className="mt-2 text-sm text-tinta-suave">Em breve.</p>
-                    ) : (
-                      <ul className="mt-3 flex list-none flex-col gap-2 text-sm">
-                        {modulo.lessons.map((aula) => (
-                          <li
-                            key={aula.id}
-                            className="border-t border-borda first:border-0"
-                          >
-                            <Link
-                              href={`/cursos/${course.slug}/${aula.slug}`}
-                              className="flex justify-between gap-4 py-2 hover:text-marca"
-                            >
-                              <span>{aula.title}</span>
-                              {aula.durationSeconds > 0 ? (
-                                <span className="shrink-0 text-tinta-suave">
-                                  {duracaoHumana(aula.durationSeconds)}
-                                </span>
-                              ) : null}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            )}
+            <ol className="mt-4 flex list-none flex-col gap-4">
+              {curso.modulos.map((modulo, indice) => (
+                <li
+                  key={modulo.titulo}
+                  className="rounded-lg border border-borda bg-papel-fundo p-5"
+                >
+                  <h3 className="font-semibold">
+                    <span className="text-tinta-suave">{indice + 1}.</span>{' '}
+                    {modulo.titulo}
+                  </h3>
+                  <ul className="mt-3 flex list-none flex-col gap-1 text-sm">
+                    {modulo.aulas.map((aula) => (
+                      <li key={aula.slug} className="border-t border-borda first:border-0">
+                        <Link
+                          href={`/cursos/${curso.slug}/${aula.slug}`}
+                          className="flex justify-between gap-4 py-2 hover:text-marca"
+                        >
+                          <span>{aula.titulo}</span>
+                          {aula.duracaoEmMinutos > 0 ? (
+                            <span className="shrink-0 text-tinta-suave">
+                              {duracaoHumana(aula.duracaoEmMinutos * 60)}
+                            </span>
+                          ) : null}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
           </section>
 
           <aside className="lg:pt-1">
             <div className="rounded-lg border border-borda p-5">
-              <p className="text-sm text-tinta-media">
-                {usuario
-                  ? 'A matrícula entra na próxima fatia do produto.'
-                  : 'Crie sua conta para acompanhar seu progresso neste curso.'}
-              </p>
-              <Link
-                href={usuario ? '/painel' : `/cadastro?destino=/cursos/${course.slug}`}
-                className="mt-4 block rounded-md bg-marca px-4 py-2.5 text-center font-medium text-papel hover:bg-marca-forte"
-              >
-                {usuario ? 'Ir para o painel' : 'Criar conta'}
-              </Link>
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-tinta-suave">
+                Quem ensina
+              </h2>
+              <p className="mt-2 font-medium">{curso.instrutor.nome}</p>
+              <p className="mt-2 text-sm text-tinta-media">{curso.instrutor.bio}</p>
             </div>
           </aside>
         </div>
 
-        {course.description ? (
-          <section aria-labelledby="sobre" className="mt-12 max-w-2xl">
-            <h2 id="sobre" className="text-xl font-semibold tracking-tight">
-              Sobre o curso
-            </h2>
-            <p className="mt-3 whitespace-pre-line text-tinta-media">
-              {course.description}
-            </p>
-          </section>
-        ) : null}
+        <section aria-labelledby="sobre" className="mt-12 max-w-2xl">
+          <h2 id="sobre" className="text-xl font-semibold tracking-tight">
+            Sobre o curso
+          </h2>
+          <p className="mt-3 whitespace-pre-line text-tinta-media">{curso.descricao}</p>
+        </section>
       </main>
     </>
   )
