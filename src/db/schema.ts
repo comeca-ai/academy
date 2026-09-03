@@ -93,6 +93,33 @@ export const sessions = pgTable(
   (t) => [index('sessions_user_id_idx').on(t.userId)],
 )
 
+/**
+ * Token de redefinição de senha.
+ *
+ * Guarda o hash, nunca o token em si: o link sai por e-mail, um canal mais
+ * exposto que o cookie de sessão (inbox, provedor, encaminhamento, log de
+ * servidor de e-mail), e uma cópia deste banco não deve bastar para redefinir
+ * a senha de ninguém.
+ */
+export const passwordResetTokens = pgTable(
+  'password_reset_tokens',
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    userId: uuid()
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    tokenHash: text().notNull(),
+    expiresAt: timestamp({ withTimezone: true }).notNull(),
+    /** Nulo enquanto não usado. Um token só redefine uma senha, uma vez. */
+    usedAt: timestamp({ withTimezone: true }),
+    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex('password_reset_tokens_token_hash_key').on(t.tokenHash),
+    index('password_reset_tokens_user_id_idx').on(t.userId),
+  ],
+)
+
 // ── Matrícula e progresso ───────────────────────────────────────────────────
 
 export const enrollmentStatus = pgEnum('enrollment_status', [
@@ -156,6 +183,7 @@ export type Organization = typeof organizations.$inferSelect
 export type User = typeof users.$inferSelect
 export type Membership = typeof memberships.$inferSelect
 export type Session = typeof sessions.$inferSelect
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect
 export type Enrollment = typeof enrollments.$inferSelect
 export type LessonProgress = typeof lessonProgress.$inferSelect
 

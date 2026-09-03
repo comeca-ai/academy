@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useActionState } from 'react'
 
 import { entrar } from '../actions'
@@ -30,6 +31,14 @@ export function FormularioDeLogin({ destino }: { destino: string }) {
         label="Senha"
         autoComplete="current-password"
         required
+        rotuloExtra={
+          <Link
+            href="/esqueci-senha"
+            className="text-sm font-medium text-tinta-suave hover:text-marca"
+          >
+            Esqueceu a senha?
+          </Link>
+        }
       />
 
       <Erro mensagem={estado.erro} />

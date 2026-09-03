@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { usuarioAtual } from '@/lib/auth/current-user'
 import { destinoSeguro } from '@/lib/rotas'
 
+import { Status } from '../campos'
 import { FormularioDeLogin } from './formulario'
 
 export const metadata: Metadata = { title: 'Entrar' }
@@ -12,9 +13,10 @@ export const metadata: Metadata = { title: 'Entrar' }
 export default async function EntrarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ destino?: string }>
+  searchParams: Promise<{ destino?: string; redefinida?: string }>
 }) {
-  const destino = destinoSeguro((await searchParams).destino)
+  const parametros = await searchParams
+  const destino = destinoSeguro(parametros.destino)
 
   // Quem já está autenticado não tem o que fazer na tela de login.
   if (await usuarioAtual()) redirect(destino)
@@ -23,6 +25,12 @@ export default async function EntrarPage({
     <>
       <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
       <p className="mt-2 mb-6 text-tinta-suave">Bom te ver de novo.</p>
+
+      {parametros.redefinida ? (
+        <div className="mb-4">
+          <Status mensagem="Senha alterada. Entre com a senha nova." />
+        </div>
+      ) : null}
 
       <FormularioDeLogin destino={destino} />
 

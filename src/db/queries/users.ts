@@ -69,6 +69,13 @@ export async function buscarUsuarioPorId(id: string): Promise<User | undefined> 
   return encontrados[0]
 }
 
+/** Troca o hash da senha. O cadastro grava o hash direto ao criar a conta;
+ * isto é só para a redefinição, depois que o token já foi consumido. */
+export async function atualizarSenha(userId: string, passwordHash: string): Promise<void> {
+  const db = getDb()
+  await db.update(users).set({ passwordHash }).where(eq(users.id, userId))
+}
+
 /**
  * Decide o papel de uma conta recém-criada.
  *

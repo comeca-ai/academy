@@ -8,6 +8,13 @@
       "when": 1788415159267,
       "tag": "0000_giant_bloodscream",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788447598931,
+      "tag": "0001_hot_corsair",
+      "breakpoints": true
     }
   ]
 }

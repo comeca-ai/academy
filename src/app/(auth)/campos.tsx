@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 /**
  * Campos dos formulários de autenticação.
@@ -12,15 +12,25 @@ export function Campo({
   label,
   id,
   dica,
+  rotuloExtra,
   ...props
-}: ComponentProps<'input'> & { label: string; id: string; dica?: string }) {
+}: ComponentProps<'input'> & {
+  label: string
+  id: string
+  dica?: string
+  /** Algo à direita do rótulo, na mesma linha — hoje só o link de "esqueceu a senha". */
+  rotuloExtra?: ReactNode
+}) {
   const idDaDica = dica ? `${id}-dica` : undefined
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-medium">
-        {label}
-      </label>
+      <div className="flex items-baseline justify-between gap-3">
+        <label htmlFor={id} className="font-medium">
+          {label}
+        </label>
+        {rotuloExtra}
+      </div>
       <input
         id={id}
         aria-describedby={idDaDica}
@@ -42,6 +52,22 @@ export function Erro({ mensagem }: { mensagem?: string }) {
     <p
       role="alert"
       className="rounded-md border border-borda bg-superficie px-3 py-2.5 text-sm"
+    >
+      {mensagem}
+    </p>
+  )
+}
+
+/**
+ * Confirmação neutra — não é erro, então `role="status"`: anunciada a quem
+ * usa leitor de tela sem a urgência de um alerta.
+ */
+export function Status({ mensagem }: { mensagem?: string }) {
+  if (!mensagem) return null
+  return (
+    <p
+      role="status"
+      className="rounded-md border border-borda bg-superficie px-3 py-2.5 text-sm text-tinta-media"
     >
       {mensagem}
     </p>

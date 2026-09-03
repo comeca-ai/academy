@@ -75,3 +75,15 @@ export const limitadorDeLogin = criarLimitador({
   maxTentativas: 5,
   janelaMs: 15 * 60 * 1000,
 })
+
+/**
+ * Limitador de pedido de redefinição de senha. Mais apertado que o de login
+ * porque o abuso aqui não é adivinhar senha — é inundar a caixa de entrada de
+ * outra pessoa. Por isso toda tentativa válida conta, e não só as que falham:
+ * ao contrário do login, não existe "acertar" um pedido de redefinição que
+ * devesse limpar a contagem.
+ */
+export const limitadorDeRedefinicao = criarLimitador({
+  maxTentativas: 3,
+  janelaMs: 60 * 60 * 1000,
+})

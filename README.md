@@ -10,8 +10,10 @@ O que já existe:
   `src/content`
 - Autenticação de ponta a ponta: cadastro, login, logout, sessão revogável no
   banco, proteção de rota e primeiro dono via `OWNER_EMAIL`
-- Defesas de login: limite de tentativas, resposta de tempo constante e
-  bloqueio de redirecionamento aberto — todas com teste
+- Recuperação de senha por e-mail: link de uso único que expira em 30 minutos
+  e revoga toda sessão ativa ao ser usado
+- Defesas de login e de recuperação: limite de tentativas, resposta de tempo
+  constante e bloqueio de redirecionamento aberto — todas com teste
 - Curso fechado para quem não tem conta: abrir um curso ou uma aula exige
   sessão válida, checada no servidor a cada requisição. O catálogo (`/cursos`),
   a home e a página do instrutor continuam públicos — são vitrine, não conteúdo
@@ -97,8 +99,9 @@ Para ligar o banco numa implantação:
    - `APP_SECRET` — gerada com `openssl rand -base64 32`
 2. Aplique o schema, de um destes jeitos:
    - `DATABASE_URL='...' npm run db:migrate` de uma máquina que alcance o banco
-   - ou cole o conteúdo de `src/db/migrations/0000_*.sql` no console SQL do
-     provedor
+   - ou cole o conteúdo dos arquivos em `src/db/migrations/*.sql` no console
+     SQL do provedor, em ordem — veja a seção abaixo para manter o Drizzle
+     ciente de que já rodaram
 3. Republique na Vercel (qualquer push serve, ou Redeploy no painel).
 
 Sem `APP_SECRET` o login falha mesmo com banco configurado — as duas
@@ -127,6 +130,29 @@ VALUES ('<sha256 do arquivo .sql>', <campo "when" do _journal.json>);
 
 O hash é o `sha256sum` do arquivo de migração inteiro, e `created_at` é o
 `when` da entrada correspondente em `src/db/migrations/meta/_journal.json`.
+
+## Ligando e-mail em produção
+
+Sem isto, "esqueci a senha" continua funcionando — só que o link de
+redefinição sai no log do servidor em vez do e-mail da pessoa. Serve para
+testar o fluxo, não para uma instalação real.
+
+Cloudflare, que hospeda vídeo e arquivo desta plataforma, não tem serviço de
+e-mail transacional: Email Routing encaminha e-mail *recebido* para uma caixa
+de entrada, não envia e-mail a partir do servidor. Por isso este é o único
+pedaço da infraestrutura que não é Cloudflare — usamos [Resend](https://resend.com).
+
+1. Crie uma conta no Resend e verifique um domínio de envio (registro DNS no
+   provedor do domínio — leva minutos a se propagar).
+2. Gere uma API key.
+3. Na Vercel, defina em Production, Preview e Development:
+   - `RESEND_API_KEY` — a chave gerada
+   - `EMAIL_REMETENTE` — endereço no domínio verificado, formato
+     `Nome <endereco@dominio>`
+4. Redeploy.
+
+As duas variáveis são exigidas juntas — falta uma, o envio real não acontece,
+mesmo com a outra configurada.
 
 ## Comandos
 
