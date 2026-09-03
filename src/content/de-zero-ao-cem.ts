@@ -44,8 +44,11 @@ export const deZeroAoCem: Curso = {
   titulo: 'De Zero ao Cem',
   resumo:
     'Inteligência artificial do começo: o que são dados, como algoritmos aprendem com eles e onde isso já aparece no seu dia.',
+  // O arco abaixo é o da turma real, apurado no mural do Classroom — não uma
+  // sequência suposta. A frase sobre ir além de digitar um prompt é do próprio
+  // instrutor, na mensagem de abertura da turma.
   descricao:
-    'Um curso de entrada em inteligência artificial, sem pré-requisito técnico.\n\nA sequência parte do material bruto — os dados — passa pelos algoritmos que aprendem com eles e chega às sessões práticas, onde cada conceito reaparece em uso real.',
+    'Um curso de entrada em inteligência artificial, sem pré-requisito técnico. A proposta é uma formação leve e sólida, que vá além da simples digitação de um prompt.\n\nO curso percorre três frentes. Algoritmos e modelos preditivos, com os tipos de algoritmo, as modalidades de aprendizagem e exemplos práticos que evidenciam a presença do aprendizado de máquina no cotidiano. Uma sessão prática sobre casos reais — relatório, precificação e leilão de imóveis. E ética e privacidade no desenvolvimento e na aplicação de sistemas de inteligência artificial.',
   instrutor: {
     nome: 'Jhonata Emerick',
     titulo: 'Cofundador e CEO da Datarisk',
